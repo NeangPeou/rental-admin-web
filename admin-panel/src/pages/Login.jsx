@@ -7,14 +7,18 @@ import {
   Box,
   Paper,
   Alert,
-  Stack
+  Stack,
+  InputAdornment,
+  IconButton
 } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 export default function Login() {
   const [form, setForm] = useState({ username: '', password: '' })
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -29,6 +33,10 @@ export default function Login() {
     } catch (err) {
       setError(err.response?.data?.detail || 'Login failed')
     }
+  }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev)
   }
 
   return (
@@ -108,12 +116,21 @@ export default function Login() {
               />
               <TextField
                 label={t('password')}
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 fullWidth
                 required
                 value={form.password}
                 onChange={e => setForm({ ...form, password: e.target.value })}
                 size="medium"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
               />
               <Button
                 type="submit"
