@@ -29,7 +29,7 @@ export default function Owners() {
   ]
 
   useEffect(() => {
-    api.get('/owners').then(res => setRows(res.data))
+    api.get('/api/owners').then(res => setRows(res.data))
 
     ws = new WebSocket(`${import.meta.env.VITE_WS_BASE_URL}/api/ws/owners`)
     ws.onopen = () => ws.send(JSON.stringify({ action: 'init' }))

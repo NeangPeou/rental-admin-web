@@ -1,14 +1,34 @@
-// src/pages/Settings.jsx
 import { useState, useEffect } from 'react'
 import {
-  Box, List, ListItem, ListItemText, ListItemIcon, ListItemButton,
-  Divider, Typography, Switch, Avatar, Paper
+  Box,
+  Paper,
+  Typography,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListItemSecondaryAction,
+  Divider,
+  Avatar,
+  Switch,
+  Chip,
+  Stack,
+  alpha
 } from '@mui/material'
 import {
-  Person, Lock, Notifications, Palette, Language,
-  HelpOutline, Feedback, Logout, Devices, Public, AccessTime
+  Person,
+  Lock,
+  Notifications,
+  Palette,
+  Language,
+  DarkMode,
+  Devices,
+  AccessTime,
+  Public,
+  Logout,
+  ChevronRight
 } from '@mui/icons-material'
-import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '../context/ThemeContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
@@ -20,15 +40,13 @@ export default function Settings() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
-  const [language, setLanguage] = useState(i18n.language || 'en')
   const [currentTime, setCurrentTime] = useState('')
   const [deviceInfo, setDeviceInfo] = useState('Detecting...')
 
-  // Real-time clock (updates every second)
+  // Live Clock (Phnom Penh Time)
   useEffect(() => {
     const updateClock = () => {
-      const now = new Date()
-      const timeStr = now.toLocaleString('en-US', {
+      const now = new Date().toLocaleString('en-US', {
         timeZone: 'Asia/Phnom_Penh',
         weekday: 'long',
         year: 'numeric',
@@ -39,126 +57,246 @@ export default function Settings() {
         second: '2-digit',
         timeZoneName: 'short'
       })
-      setCurrentTime(timeStr)
+      setCurrentTime(now)
     }
     updateClock()
     const timer = setInterval(updateClock, 1000)
     return () => clearInterval(timer)
   }, [])
 
-  // Detect real device & browser
+  // Device Detection
   useEffect(() => {
     const ua = navigator.userAgent
-    let os = 'Unknown'
-    let browser = 'Unknown'
-    let version = ''
+    let os = 'Unknown OS'
+    let browser = 'Unknown Browser'
 
-    if (/Windows NT/.test(ua)) os = 'Windows'
-    else if (/Mac OS X/.test(ua)) os = 'macOS'
-    else if (/Linux/.test(ua)) os = 'Linux'
-    else if (/Android/.test(ua)) os = 'Android'
-    else if (/iPhone|iPad|iPod/.test(ua)) os = 'iOS'
+    if (/Windows/i.test(ua)) os = 'Windows'
+    else if (/Mac/i.test(ua)) os = 'macOS'
+    else if (/Linux/i.test(ua)) os = 'Linux'
+    else if (/Android/i.test(ua)) os = 'Android'
+    else if (/iPhone|iPad|iPod/i.test(ua)) os = 'iOS'
 
-    if (/Chrome\/[\d.]+/.test(ua) && !/Edg/.test(ua)) { browser = 'Chrome'; version = ua.match(/Chrome\/([\d.]+)/)?.[1] || '' }
-    else if (/Firefox\/[\d.]+/.test(ua)) { browser = 'Firefox'; version = ua.match(/Firefox\/([\d.]+)/)?.[1] || '' }
-    else if (/Edg\/[\d.]+/.test(ua)) { browser = 'Edge'; version = ua.match(/Edg\/([\d.]+)/)?.[1] || '' }
-    else if (/Safari/.test(ua) && !/Chrome/.test(ua)) { browser = 'Safari'; version = ua.match(/Version\/([\d.]+)/)?.[1] || '' }
+    if (/Chrome/i.test(ua)) browser = 'Chrome'
+    else if (/Firefox/i.test(ua)) browser = 'Firefox'
+    else if (/Safari/i.test(ua)) browser = 'Safari'
+    else if (/Edg/i.test(ua)) browser = 'Edge'
 
-    setDeviceInfo(`${os} • ${browser} ${version.split('.')[0]}`)
+    setDeviceInfo(`${os} • ${browser}`)
   }, [])
 
   const handleLanguageChange = (e) => {
     const lang = e.target.value
-    setLanguage(lang)
     i18n.changeLanguage(lang)
     localStorage.setItem('i18nextLng', lang)
   }
 
-  const sections = [
-    { title: "Account Settings", items: [
-      { icon: <Person />, text: t('my_account') || "My Account", onClick: () => navigate('/profile') },
-      { icon: <Lock />, text: t('privacy_safety') || "Privacy & Safety" },
-      { icon: <Notifications />, text: t('notifications') || "Notifications" },
-    ]},
-    { title: "App Settings", items: [
-      { icon: <Palette />, text: t('appearance') || "Appearance" },
-      { icon: <DarkModeIcon />, text: t('dark_mode') || "Dark Mode", action: <Switch checked={darkMode} onChange={toggleDarkMode} /> },
-      { icon: <Language />, text: t('language') || "Language", action: (
-        <select value={language} onChange={handleLanguageChange}
-          style={{ border:'none', background:'transparent', fontSize:'14px', outline:'none' }}>
-          <option value="en">English</option>
-          <option value="km">ភាសាខ្មែរ</option>
-        </select>
-      )},
-    ]},
-    { title: "Support", items: [
-      { icon: <HelpOutline />, text: t('help') || "Help" },
-      { icon: <Feedback />, text: t('feedback') || "Feedback" },
-    ]},
-    { title: "", items: [
-      { icon: <Logout color="error" />, text: t('log_out') || "Log Out", onClick: logout },
-    ]},
-    { title: "Session Info", items: [
-      { icon: <Public />, text: "Location", subtitle: "Cambodia" },
-      { icon: <AccessTime />, text: "Current Time", subtitle: currentTime },
-      { icon: <Devices />, text: t('device_info') || "Device Info", subtitle: deviceInfo },
-    ]}
-  ]
-
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 3, px: { xs: 1, sm: 2 } }}>
-      <Typography variant="h5" fontWeight={700} sx={{ px: 2, mb: 3 }}>
-        {t('settings') || 'Settings'}
-      </Typography>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: { xs: 2, sm: 4 } }}>
+      <Box sx={{ maxWidth: 800, mx: 'auto', px: { xs: 2, sm: 3 } }}>
+        
+        {/* Header */}
+        <Typography
+          variant="h4"
+          fontWeight={800}
+          gutterBottom
+          sx={{
+            background: darkMode
+              ? 'linear-gradient(90deg, #667eea, #764ba2)'
+              : 'linear-gradient(90deg, #667eea, #764ba2)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            mb: 4
+          }}
+        >
+          {t('settings')}
+        </Typography>
 
-      <Paper elevation={3} sx={{ borderRadius: 3, overflow: 'hidden', mx: 'auto', maxWidth: 600 }}>
-        <List disablePadding>
-          {sections.map((section, idx) => (
-            <Box key={idx}>
-              {section.title && (
-                <Typography variant="overline" sx={{
-                  px: 3, py: 1.5, bgcolor: 'grey.100', color: 'text.secondary',
-                  fontWeight: 600, fontSize: '11px', display: 'block'
-                }}>
-                  {section.title}
-                </Typography>
-              )}
+        {/* Main Settings Card */}
+        <Paper
+          elevation={darkMode ? 8 : 3}
+          sx={{
+            borderRadius: 4,
+            overflow: 'hidden',
+            background: darkMode
+              ? 'rgba(20, 20, 40, 0.8)'
+              : 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid',
+            borderColor: 'divider'
+          }}
+        >
 
-              {section.items.map((item, i) => (
-                <ListItem key={i} disablePadding>
-                  <ListItemButton onClick={item.onClick || (() => {})} sx={{ py: 2, px: 3 }}>
-                    <ListItemIcon sx={{ minWidth: 44, color: item.color || 'inherit' }}>
-                      {item.icon}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={item.text}
-                      secondary={item.subtitle || null}
-                      primaryTypographyProps={{ fontWeight: 500, sx: { wordBreak: 'break-word' } }}
-                      sx={{ my: 0, pr: 2 }}
-                    />
-                    {item.action && typeof item.action !== 'function' && item.action}
-                    {!item.action && !item.subtitle && (
-                      <ListItemIcon sx={{ minWidth: 32, justifyContent: 'flex-end' }}>
-                        <Typography color="text.secondary">›</Typography>
-                      </ListItemIcon>
-                    )}
-                  </ListItemButton>
-                </ListItem>
-              ))}
-              {idx < sections.length - 1 && <Divider />}
-            </Box>
-          ))}
-        </List>
-      </Paper>
+          {/* Account Section */}
+          <List disablePadding>
+            <ListItem sx={{ bgcolor: alpha('#667eea', 0.1), py: 2 }}>
+              <ListItemText
+                primary={<Typography fontWeight={700} color="primary">Account</Typography>}
+                secondary="Manage your profile and security"
+              />
+            </ListItem>
 
-      {/* User Card */}
-      <Box sx={{ textAlign: 'center', mt: 5 }}>
-        <Avatar sx={{ width: 80, height: 80, mx: 'auto', fontSize: 32 }}>
-          {user?.userName?.[0]?.toUpperCase() || 'A'}
-        </Avatar>
-        <Typography variant="h6" sx={{ mt: 1 }}>{user?.userName || 'Admin'}</Typography>
-        <Typography variant="body2" color="text.secondary">
-          {user?.phoneNumber || 'admin@rental.com'}
+            <ListItemButton onClick={() => navigate('/profile')} sx={{ py: 2.5 }}>
+              <ListItemIcon><Person sx={{ color: '#667eea' }} /></ListItemIcon>
+              <ListItemText primary={t('profile')} secondary="Edit personal information" />
+              <ChevronRight color="action" />
+            </ListItemButton>
+
+            <ListItemButton sx={{ py: 2.5 }}>
+              <ListItemIcon><Lock sx={{ color: '#f093fb' }} /></ListItemIcon>
+              <ListItemText primary="Change Password" secondary="Update your login credentials" />
+              <ChevronRight color="action" />
+            </ListItemButton>
+
+            <Divider />
+          </List>
+
+          {/* Appearance Section */}
+          <List disablePadding>
+            <ListItem sx={{ bgcolor: alpha('#764ba2', 0.1), py: 2 }}>
+              <ListItemText
+                primary={<Typography fontWeight={700} color="secondary">Appearance</Typography>}
+                secondary="Customize how the app looks"
+              />
+            </ListItem>
+
+            <ListItem sx={{ py: 2.5 }}>
+              <ListItemIcon><DarkMode sx={{ color: '#ffd93d' }} /></ListItemIcon>
+              <ListItemText
+                primary={t('dark_mode')}
+                secondary={darkMode ? "Currently in dark mode" : "Currently in light mode"}
+              />
+              <ListItemSecondaryAction>
+                <Switch checked={darkMode} onChange={toggleDarkMode} color="primary" />
+              </ListItemSecondaryAction>
+            </ListItem>
+
+            <ListItem sx={{ py: 2.5 }}>
+              <ListItemIcon><Language sx={{ color: '#4facfe' }} /></ListItemIcon>
+              <ListItemText
+                primary={t('language')}
+                secondary="ភាសា • Language"
+              />
+              <ListItemSecondaryAction>
+                <select
+                  value={i18n.language}
+                  onChange={handleLanguageChange}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '20px',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    background: darkMode ? '#1a1a2e' : '#f5f5f5',
+                    color: 'inherit',
+                    fontSize: '14px',
+                    outline: 'none'
+                  }}
+                >
+                  <option value="en">English</option>
+                  <option value="km">ភាសាខ្មែរ</option>
+                </select>
+              </ListItemSecondaryAction>
+            </ListItem>
+
+            <Divider />
+          </List>
+
+          {/* Session Info */}
+          <List disablePadding>
+            <ListItem sx={{ bgcolor: alpha('#43a047', 0.1), py: 2 }}>
+              <ListItemText
+                primary={<Typography fontWeight={700} color="success.main">Session Information</Typography>}
+                secondary="Your current login details"
+              />
+            </ListItem>
+
+            <ListItem sx={{ py: 2 }}>
+              <ListItemIcon><Public sx={{ color: '#43a047' }} /></ListItemIcon>
+              <ListItemText primary="Location" secondary="Phnom Penh, Cambodia" />
+            </ListItem>
+
+            <ListItem sx={{ py: 2 }}>
+              <ListItemIcon><AccessTime sx={{ color: '#ff9800' }} /></ListItemIcon>
+              <ListItemText primary="Current Time" secondary={currentTime} />
+            </ListItem>
+
+            <ListItem sx={{ py: 2 }}>
+              <ListItemIcon><Devices sx={{ color: '#2196f3' }} /></ListItemIcon>
+              <ListItemText primary="Device" secondary={deviceInfo} />
+            </ListItem>
+
+            <Divider />
+          </List>
+
+          {/* Logout */}
+          <List disablePadding>
+            <ListItemButton
+              onClick={logout}
+              sx={{
+                py: 3,
+                bgcolor: alpha('#f44336', 0.1),
+                '&:hover': { bgcolor: alpha('#f44336', 0.2) }
+              }}
+            >
+              <ListItemIcon>
+                <Logout sx={{ color: '#f44336' }} />
+              </ListItemIcon>
+              <ListItemText
+                primary={<Typography fontWeight={700} color="#f44336">{t('logout')}</Typography>}
+                secondary="Sign out from this device"
+              />
+            </ListItemButton>
+          </List>
+        </Paper>
+
+        {/* User Profile Card at Bottom */}
+        <Paper
+          elevation={darkMode ? 10 : 4}
+          sx={{
+            mt: 6,
+            p: 4,
+            borderRadius: 4,
+            textAlign: 'center',
+            background: darkMode
+              ? 'linear-gradient(135deg, #16213e, #1a1a2e)'
+              : 'linear-gradient(135deg, #667eea, #764ba2)',
+            color: 'white'
+          }}
+        >
+          <Avatar
+            sx={{
+              width: 90,
+              height: 90,
+              mx: 'auto',
+              mb: 2,
+              fontSize: 40,
+              fontWeight: 'bold',
+              bgcolor: 'rgba(255,255,255,0.2)',
+              backdropFilter: 'blur(10px)'
+            }}
+          >
+            {user?.userName?.[0]?.toUpperCase() || 'A'}
+          </Avatar>
+          <Typography variant="h5" fontWeight={700}>
+            {user?.userName || 'Admin User'}
+          </Typography>
+          <Typography variant="body2" sx={{ opacity: 0.9, mt: 1 }}>
+            {user?.phoneNumber || 'admin@rental.com'}
+          </Typography>
+          <Chip
+            label="Administrator"
+            size="small"
+            sx={{
+              mt: 2,
+              bgcolor: 'rgba(255,255,255,0.3)',
+              color: 'white',
+              fontWeight: 600
+            }}
+          />
+        </Paper>
+
+        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textAlign: 'center', mt: 4 }}>
+          © 2025 Rental Admin Panel • All rights reserved
         </Typography>
       </Box>
     </Box>

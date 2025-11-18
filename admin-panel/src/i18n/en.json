@@ -29,5 +29,17 @@
   "push_notif": "Push Notifications",
   "login_alert": "Alert on New Login",
   "save_settings": "Save Settings",
-  "settings_saved": "Settings saved successfully!"
+  "settings_saved": "Settings saved successfully!",
+  "system_logs": "System Logs",
+  "view_all_system_activities": "Monitor all system activities and events",
+  "search_logs": "Search logs...",
+  "no_logs_found": "No logs found",
+  "logs_will_appear_here": "System activities will appear here",
+  "failed_to_load_logs": "Failed to load system logs",
+  "user": "User",
+  "action": "Action",
+  "type": "log Type",
+  "message": "Message",
+  "host": "Type Name",
+  "time": "Create at"
 }
