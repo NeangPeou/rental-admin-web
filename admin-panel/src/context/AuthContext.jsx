@@ -23,8 +23,10 @@ export const AuthProvider = ({ children }) => {
     return res.data
   }
 
-  const logout = () => {
-    api.post('/logout').catch(() => {})
+  const logout = async () => {
+    try {
+      await api.post('/api/logout')
+    } catch (e) {}
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
     setUser(null)
