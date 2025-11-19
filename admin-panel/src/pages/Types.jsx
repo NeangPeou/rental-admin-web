@@ -1,8 +1,5 @@
-// Types.jsx - Fully restyled to match SystemLogs.jsx
-import { useEffect, useState } from 'react'
-import {
-  DataGrid,
-} from '@mui/x-data-grid'
+// src/pages/Types.jsx  (or wherever you keep it)
+import { useTranslation } from 'react-i18next'
 import {
   Box,
   Typography,
@@ -27,27 +24,35 @@ import {
   Category as CategoryIcon,
   Search,
 } from '@mui/icons-material'
-import api from '../api/axios.js'
-import { useTranslation } from 'react-i18next'
+import { DataGrid } from '@mui/x-data-grid'
+import TypesController from '../controllers/TypesController'
 
 export default function Types() {
-  const [rows, setRows] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [search, setSearch] = useState('')
-
-  const [open, setOpen] = useState(false)
-  const [editId, setEditId] = useState(null)
-  const [form, setForm] = useState({ type_code: '', name: '' })
-  const [formErrors, setFormErrors] = useState({})
-  const [submitError, setSubmitError] = useState('')
-  const [selectedRowIds, setSelectedRowIds] = useState([])
-
   const { t } = useTranslation()
   const theme = useTheme()
   const darkMode = theme.palette.mode === 'dark'
 
-  // Columns
+  const {
+    rows: filteredRows,
+    loading,
+    error,
+    search,
+    setSearch,
+    selectedRowIds,
+    setSelectedRowIds,
+    open,
+    editId,
+    form,
+    setForm,
+    formErrors,
+    submitError,
+    openCreateDialog,
+    handleEdit,
+    closeDialog,
+    handleSubmit,
+    handleBulkDelete,
+  } = TypesController()
+
   const columns = [
     {
       field: 'typeCode',
@@ -76,117 +81,6 @@ export default function Types() {
     },
   ]
 
-  // Fetch data
-  const fetchTypes = async () => {
-    try {
-      setLoading(true)
-      setError(null)
-      const res = await api.get('/api/getalltype')
-      const formatted = res.data.map(item => ({
-        id: Number(item.id),
-        typeCode: item.typeCode,
-        name: item.name,
-      }))
-      setRows(formatted)
-    } catch (err) {
-      setError(t('error_fetching_types') || 'Failed to load types')
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchTypes()
-  }, [])
-
-  // Validation
-  const validateForm = () => {
-    const errs = {}
-    if (!form.type_code.trim()) errs.type_code = t('code_required')
-    else if (!editId && rows.some(r => r.typeCode === form.type_code.trim()))
-      errs.type_code = t('code_already_exists')
-
-    if (!form.name.trim()) errs.name = t('name_required')
-    setFormErrors(errs)
-    return Object.keys(errs).length === 0
-  }
-
-  // Submit
-  const handleSubmit = async () => {
-    if (!validateForm()) return
-    setSubmitError('')
-
-    try {
-      const payload = { type_code: form.type_code.trim(), name: form.name.trim() }
-
-      if (editId) {
-        await api.put(`/api/type/${editId}`, payload)
-      } else {
-        await api.post('/api/create-type', payload)
-      }
-
-      closeDialog()
-      fetchTypes()
-    } catch (err) {
-      const msg = err.response?.data?.detail || err.message
-      setSubmitError(msg.includes('already exists') ? t('code_already_exists') : msg)
-    }
-  }
-
-  // Dialog handlers
-  const openCreateDialog = () => {
-    setEditId(null)
-    setForm({ type_code: '', name: '' })
-    setFormErrors({})
-    setSubmitError('')
-    setOpen(true)
-  }
-
-  const handleEdit = (row) => {
-    setEditId(row.id)
-    setForm({ type_code: row.typeCode, name: row.name })
-    setFormErrors({})
-    setSubmitError('')
-    setOpen(true)
-  }
-
-  const closeDialog = () => {
-    setOpen(false)
-    setEditId(null)
-    setForm({ type_code: '', name: '' })
-    setFormErrors({})
-    setSubmitError('')
-  }
-
-  // Bulk delete
-  const handleBulkDelete = async () => {
-    if (selectedRowIds.length === 0) return
-
-    const confirmMsg =
-      selectedRowIds.length === 1
-        ? t('confirm_delete_single')
-        : t('confirm_delete_multiple', { count: selectedRowIds.length })
-
-    if (!window.confirm(confirmMsg)) return
-
-    try {
-      await Promise.all(selectedRowIds.map(id => api.delete(`/api/type/${id}`)))
-      setSelectedRowIds([])
-      fetchTypes()
-    } catch (err) {
-      console.error(err)
-      alert(t('error_deleting_types'))
-    }
-  }
-
-  // Search filter
-  const filteredRows = rows.filter(row =>
-    row.typeCode.toLowerCase().includes(search.toLowerCase()) ||
-    row.name.toLowerCase().includes(search.toLowerCase())
-  )
-
-  // Empty state
   const NoRowsOverlay = () => (
     <Box
       sx={{
@@ -203,6 +97,11 @@ export default function Types() {
       <Typography variant="h6" fontWeight={600}>
         {t('no_types_found') || 'No property types found'}
       </Typography>
+      {search && (
+        <Typography variant="body2">
+          Try adjusting your search term
+        </Typography>
+      )}
     </Box>
   )
 
@@ -220,7 +119,7 @@ export default function Types() {
         p: 0,
       }}
     >
-      {/* Header + Search + Actions */}
+      {/* Header */}
       <Box
         sx={{
           p: { xs: 2, sm: 1.5 },
@@ -231,7 +130,6 @@ export default function Types() {
           gap: 2,
         }}
       >
-        {/* Title & Subtitle */}
         <Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <CategoryIcon sx={{ opacity: 0.7, fontSize: 32 }} />
@@ -252,7 +150,6 @@ export default function Types() {
           </Typography>
         </Box>
 
-        {/* Search + Action Buttons */}
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, width: { xs: '100%', sm: 'auto' } }}>
           <TextField
             placeholder={t('search_types') || 'Search types...'}
@@ -298,7 +195,7 @@ export default function Types() {
         </Box>
       </Box>
 
-      {/* DataGrid */}
+      {/* Table */}
       <Box sx={{ height: 'calc(100vh - 184px)', width: '100%' }}>
         {error && <Alert severity="error" sx={{ m: 2 }}>{error}</Alert>}
 
@@ -335,7 +232,7 @@ export default function Types() {
         />
       </Box>
 
-      {/* Create/Edit Dialog */}
+      {/* Dialog */}
       <Dialog open={open} onClose={closeDialog} maxWidth="sm" fullWidth>
         <DialogTitle>
           {editId ? t('edit_type') : t('create_new_type')}
