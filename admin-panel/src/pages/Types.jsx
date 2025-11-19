@@ -29,8 +29,6 @@ import TypesController from '../controllers/TypesController'
 
 export default function Types() {
   const { t } = useTranslation()
-  const theme = useTheme()
-  const darkMode = theme.palette.mode === 'dark'
 
   const {
     rows: filteredRows,
@@ -216,16 +214,10 @@ export default function Types() {
             noRowsOverlay: NoRowsOverlay,
           }}
           sx={{
-            border: 'none',
+            borderTop: '1px solid gray[300]',
+            borderBottom: 'none',
             '& .MuiDataGrid-row:hover': {
-              bgcolor: alpha('#667eea', darkMode ? 0.15 : 0.07),
               cursor: 'pointer',
-            },
-            '& .MuiDataGrid-columnHeaders': {
-              bgcolor: alpha('#667eea', 0.08),
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              fontSize: '0.875rem',
             },
           }}
         />
