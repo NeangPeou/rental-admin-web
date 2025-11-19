@@ -1,69 +1,118 @@
-// Types.jsx
+// Types.jsx - Fully restyled to match SystemLogs.jsx
 import { useEffect, useState } from 'react'
-import { DataGrid } from '@mui/x-data-grid'
 import {
-  Button,
+  DataGrid,
+} from '@mui/x-data-grid'
+import {
   Box,
+  Typography,
+  Paper,
+  Button,
+  Chip,
+  LinearProgress,
+  Alert,
+  TextField,
+  InputAdornment,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
-  Typography,
-  Alert,
-  Stack
+  Stack,
+  alpha,
+  useTheme,
 } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete'
+import {
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  Category as CategoryIcon,
+  Search,
+} from '@mui/icons-material'
 import api from '../api/axios.js'
 import { useTranslation } from 'react-i18next'
 
 export default function Types() {
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [search, setSearch] = useState('')
+
   const [open, setOpen] = useState(false)
   const [editId, setEditId] = useState(null)
   const [form, setForm] = useState({ type_code: '', name: '' })
-  const [errors, setErrors] = useState({})
+  const [formErrors, setFormErrors] = useState({})
   const [submitError, setSubmitError] = useState('')
-  const [selectedRows, setSelectedRows] = useState(new Set())
+  const [selectedRowIds, setSelectedRowIds] = useState([])
 
   const { t } = useTranslation()
+  const theme = useTheme()
+  const darkMode = theme.palette.mode === 'dark'
 
+  // Columns
   const columns = [
-    { field: 'typeCode', headerName: t('code'), flex: 1 },
-    { field: 'name', headerName: t('name'), flex: 2 },
+    {
+      field: 'typeCode',
+      headerName: t('code'),
+      width: 180,
+      renderCell: (params) => (
+        <Chip
+          label={params.value}
+          size="small"
+          color="primary"
+          variant="outlined"
+          sx={{ fontWeight: 600 }}
+        />
+      ),
+    },
+    {
+      field: 'name',
+      headerName: t('name'),
+      flex: 1,
+      minWidth: 200,
+      renderCell: (params) => (
+        <Typography variant="body2" sx={{ fontWeight: 500, py: 0.5 }}>
+          {params.value}
+        </Typography>
+      ),
+    },
   ]
 
+  // Fetch data
   const fetchTypes = async () => {
     try {
       setLoading(true)
+      setError(null)
       const res = await api.get('/api/getalltype')
       const formatted = res.data.map(item => ({
         id: Number(item.id),
         typeCode: item.typeCode,
-        name: item.name
+        name: item.name,
       }))
       setRows(formatted)
     } catch (err) {
-      console.error('Fetch error:', err)
-      alert(t('error_fetching_types') || 'Failed to load types')
+      setError(t('error_fetching_types') || 'Failed to load types')
+      console.error(err)
     } finally {
       setLoading(false)
     }
   }
 
+  useEffect(() => {
+    fetchTypes()
+  }, [])
+
+  // Validation
   const validateForm = () => {
-    const newErrors = {}
-    if (!form.type_code.trim()) newErrors.type_code = t('code_required')
-    else if (!editId) {
-      const exists = rows.some(r => r.typeCode === form.type_code.trim())
-      if (exists) newErrors.type_code = t('code_already_exists')
-    }
-    if (!form.name.trim()) newErrors.name = t('name_required')
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    const errs = {}
+    if (!form.type_code.trim()) errs.type_code = t('code_required')
+    else if (!editId && rows.some(r => r.typeCode === form.type_code.trim()))
+      errs.type_code = t('code_already_exists')
+
+    if (!form.name.trim()) errs.name = t('name_required')
+    setFormErrors(errs)
+    return Object.keys(errs).length === 0
   }
 
+  // Submit
   const handleSubmit = async () => {
     if (!validateForm()) return
     setSubmitError('')
@@ -79,129 +128,214 @@ export default function Types() {
 
       closeDialog()
       fetchTypes()
-      alert(editId ? t('type_updated_success') : t('type_created_success'))
     } catch (err) {
-      const msg = err.response?.data?.detail || 'Operation failed'
+      const msg = err.response?.data?.detail || err.message
       setSubmitError(msg.includes('already exists') ? t('code_already_exists') : msg)
     }
   }
 
-  const handleEdit = (row) => {
-    setEditId(row.id)
-    setForm({ type_code: row.typeCode || '', name: row.name || '' })
-    setErrors({})
+  // Dialog handlers
+  const openCreateDialog = () => {
+    setEditId(null)
+    setForm({ type_code: '', name: '' })
+    setFormErrors({})
     setSubmitError('')
     setOpen(true)
   }
 
-  const handleBulkDelete = async () => {
-    const selectedIds = Array.from(selectedRows)
-    if (selectedIds.length === 0) return
-
-    const confirmMsg = selectedIds.length === 1
-      ? t('confirm_delete_single')
-      : t('confirm_delete_multiple', { count: selectedIds.length })
-
-    if (!window.confirm(confirmMsg)) return
-
-    try {
-      await Promise.all(selectedIds.map(id => api.delete(`/api/type/${id}`)))
-      setSelectedRows(new Set())
-      fetchTypes()
-      alert(t('types_deleted_success', { count: selectedIds.length }))
-    } catch (err) {
-      console.error('Delete error:', err)
-      alert(t('error_deleting_types'))
-    }
-  }
-
-  const handleRowDoubleClick = (params) => {
-    handleEdit(params.row)
+  const handleEdit = (row) => {
+    setEditId(row.id)
+    setForm({ type_code: row.typeCode, name: row.name })
+    setFormErrors({})
+    setSubmitError('')
+    setOpen(true)
   }
 
   const closeDialog = () => {
     setOpen(false)
     setEditId(null)
     setForm({ type_code: '', name: '' })
-    setErrors({})
+    setFormErrors({})
     setSubmitError('')
   }
 
-  const openCreateDialog = () => {
-    setEditId(null)
-    setForm({ type_code: '', name: '' })
-    setErrors({})
-    setSubmitError('')
-    setOpen(true)
+  // Bulk delete
+  const handleBulkDelete = async () => {
+    if (selectedRowIds.length === 0) return
+
+    const confirmMsg =
+      selectedRowIds.length === 1
+        ? t('confirm_delete_single')
+        : t('confirm_delete_multiple', { count: selectedRowIds.length })
+
+    if (!window.confirm(confirmMsg)) return
+
+    try {
+      await Promise.all(selectedRowIds.map(id => api.delete(`/api/type/${id}`)))
+      setSelectedRowIds([])
+      fetchTypes()
+    } catch (err) {
+      console.error(err)
+      alert(t('error_deleting_types'))
+    }
   }
 
-  useEffect(() => {
-    fetchTypes()
-  }, [])
+  // Search filter
+  const filteredRows = rows.filter(row =>
+    row.typeCode.toLowerCase().includes(search.toLowerCase()) ||
+    row.name.toLowerCase().includes(search.toLowerCase())
+  )
 
-  const selectedCount = selectedRows.size
+  // Empty state
+  const NoRowsOverlay = () => (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        color: 'text.secondary',
+        gap: 2,
+      }}
+    >
+      <CategoryIcon sx={{ fontSize: 70, opacity: 0.3 }} />
+      <Typography variant="h6" fontWeight={600}>
+        {t('no_types_found') || 'No property types found'}
+      </Typography>
+    </Box>
+  )
+
+  const selectedCount = selectedRowIds.length
 
   return (
-    <Box sx={{ height: 700, width: '100%', p: 3 }}>
-      <Typography variant="h5" gutterBottom>
-        {t('property_types') || 'Property Types'}
-      </Typography>
-
-      <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
-        <Button variant="contained" onClick={openCreateDialog}>
-          {t('create')} Type
-        </Button>
-
-        <Button
-          variant="outlined"
-          color="error"
-          startIcon={<DeleteIcon />}
-          onClick={handleBulkDelete}
-          disabled={selectedCount === 0}
-        >
-          {t('delete_selected')} ({selectedCount})
-        </Button>
-
-        {selectedCount > 0 && (
-          <Typography color="text.secondary">
-            {selectedCount} {selectedCount === 1 ? t('item_selected') : t('items_selected')}
-          </Typography>
-        )}
-      </Stack>
-
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        loading={loading}
-        checkboxSelection
-        getRowId={(row) => row.id}
-        disableRowSelectionOnClick
-        onRowSelectionModelChange={(newSelection) => {
-          // Fix: Safely extract ids array (handles object, array, or null)
-          let ids = []
-          if (Array.isArray(newSelection)) {
-            ids = newSelection
-          } else if (newSelection && typeof newSelection === 'object' && newSelection.ids) {
-            ids = Array.isArray(newSelection.ids) ? newSelection.ids : Array.from(newSelection.ids || [])
-          }
-          setSelectedRows(new Set(ids))
-        }}
-        onRowClick={(params, event) => {
-          event.defaultMuiPrevented = true
-        }}
-        onRowDoubleClick={handleRowDoubleClick}
-        pageSizeOptions={[10, 25, 50, 100]}
+    <Paper
+      elevation={6}
+      sx={{
+        borderRadius: 4,
+        overflow: 'hidden',
+        bgcolor: 'background.paper',
+        width: '100%',
+        minHeight: 'calc(100vh - 96px)',
+        p: 0,
+      }}
+    >
+      {/* Header + Search + Actions */}
+      <Box
         sx={{
-          '& .MuiDataGrid-row:hover': {
-            cursor: 'pointer',
-            backgroundColor: 'action.hover'
-          },
-          boxShadow: 2,
-          border: 1,
-          borderColor: 'divider'
+          p: { xs: 2, sm: 1.5 },
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          justifyContent: 'space-between',
+          alignItems: { xs: 'flex-start', sm: 'center' },
+          gap: 2,
         }}
-      />
+      >
+        {/* Title & Subtitle */}
+        <Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <CategoryIcon sx={{ opacity: 0.7, fontSize: 32 }} />
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 500,
+                background: 'linear-gradient(90deg, #667eea, #764ba2)',
+                backgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              {t('property_types') || 'Property Types'}
+            </Typography>
+          </Box>
+          <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
+            {t('manage_property_type_definitions') || 'Manage property type definitions'}
+          </Typography>
+        </Box>
 
+        {/* Search + Action Buttons */}
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, width: { xs: '100%', sm: 'auto' } }}>
+          <TextField
+            placeholder={t('search_types') || 'Search types...'}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            size="small"
+            sx={{
+              width: { xs: '100%', sm: 300 },
+              background: alpha('#667eea', 0.05),
+              borderRadius: 3,
+              '& .MuiOutlinedInput-root': { borderRadius: 3 },
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search sx={{ opacity: 0.7 }} />
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <Stack direction="row" spacing={1.5}>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={openCreateDialog}
+              sx={{ borderRadius: 3, textTransform: 'none', fontWeight: 600 }}
+            >
+              {t('create_type') || 'Create Type'}
+            </Button>
+
+            <Button
+              variant="outlined"
+              color="error"
+              startIcon={<DeleteIcon />}
+              onClick={handleBulkDelete}
+              disabled={selectedCount === 0}
+              sx={{ borderRadius: 3, textTransform: 'none' }}
+            >
+              {t('delete') || 'Delete'} ({selectedCount})
+            </Button>
+          </Stack>
+        </Box>
+      </Box>
+
+      {/* DataGrid */}
+      <Box sx={{ height: 'calc(100vh - 184px)', width: '100%' }}>
+        {error && <Alert severity="error" sx={{ m: 2 }}>{error}</Alert>}
+
+        <DataGrid
+          rows={filteredRows}
+          columns={columns}
+          loading={loading}
+          checkboxSelection
+          disableRowSelectionOnClick
+          onRowSelectionModelChange={setSelectedRowIds}
+          rowSelectionModel={selectedRowIds}
+          onRowDoubleClick={(params) => handleEdit(params.row)}
+          initialState={{ pagination: { paginationModel: { pageSize: 25 } } }}
+          pageSizeOptions={[10, 25, 50, 100]}
+          rowHeight={44}
+          density="compact"
+          slots={{
+            loadingOverlay: LinearProgress,
+            noRowsOverlay: NoRowsOverlay,
+          }}
+          sx={{
+            border: 'none',
+            '& .MuiDataGrid-row:hover': {
+              bgcolor: alpha('#667eea', darkMode ? 0.15 : 0.07),
+              cursor: 'pointer',
+            },
+            '& .MuiDataGrid-columnHeaders': {
+              bgcolor: alpha('#667eea', 0.08),
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              fontSize: '0.875rem',
+            },
+          }}
+        />
+      </Box>
+
+      {/* Create/Edit Dialog */}
       <Dialog open={open} onClose={closeDialog} maxWidth="sm" fullWidth>
         <DialogTitle>
           {editId ? t('edit_type') : t('create_new_type')}
@@ -216,8 +350,8 @@ export default function Types() {
             fullWidth
             value={form.type_code}
             onChange={(e) => setForm({ ...form, type_code: e.target.value })}
-            error={!!errors.type_code}
-            helperText={errors.type_code}
+            error={!!formErrors.type_code}
+            helperText={formErrors.type_code}
             disabled={!!editId}
             sx={{ mb: 2 }}
           />
@@ -228,8 +362,8 @@ export default function Types() {
             fullWidth
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            error={!!errors.name}
-            helperText={errors.name}
+            error={!!formErrors.name}
+            helperText={formErrors.name}
           />
         </DialogContent>
 
@@ -240,6 +374,6 @@ export default function Types() {
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </Paper>
   )
 }
