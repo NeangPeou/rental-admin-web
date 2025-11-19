@@ -99,7 +99,7 @@ export default function Types() {
       </Typography>
       {search && (
         <Typography variant="body2">
-          Try adjusting your search term
+          {t('no_types_found_search')}
         </Typography>
       )}
     </Box>
@@ -116,7 +116,6 @@ export default function Types() {
         bgcolor: 'background.paper',
         width: '100%',
         minHeight: 'calc(100vh - 96px)',
-        p: 0,
       }}
     >
       {/* Header */}

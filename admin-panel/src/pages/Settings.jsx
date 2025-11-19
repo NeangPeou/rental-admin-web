@@ -175,7 +175,7 @@ export default function Settings() {
               <ListItemIcon><Language sx={{ color: '#4facfe' }} /></ListItemIcon>
               <ListItemText
                 primary={t('language')}
-                secondary="ភាសា • Language"
+                secondary="Language"
               />
               <ListItemSecondaryAction>
                 <select
@@ -192,8 +192,9 @@ export default function Settings() {
                     outline: 'none'
                   }}
                 >
-                  <option value="en">English</option>
-                  <option value="km">ភាសាខ្មែរ</option>
+                  <option value="en">english</option>
+                  <option value="km">khmer</option>
+                  <option value="fr">french</option>
                 </select>
               </ListItemSecondaryAction>
             </ListItem>

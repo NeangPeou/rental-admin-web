@@ -1,10 +1,13 @@
-// src/controllers/TypesController.jsx
+// src/controllers/TypesController.jsx (UPDATED)
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TypeService from "../services/TypeService";
+import { useSnackbar } from "../components/common/Snackbar";
+import { ConfirmDelete } from "../components/common/ConfirmDelete";
 
 export default function TypesController() {
   const { t } = useTranslation();
+  const snackbar = useSnackbar();
 
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,7 +34,7 @@ export default function TypesController() {
       setRows(formatted);
     } catch (err) {
       setError(t("error_fetching_types") || "Failed to load types");
-      console.error(err);
+      snackbar.error(t("error_fetching_types"));
     } finally {
       setLoading(false);
     }
@@ -64,8 +67,10 @@ export default function TypesController() {
 
       if (editId) {
         await TypeService.update(editId, payload);
+        snackbar.success(t("type_updated") || "Type updated!");
       } else {
         await TypeService.create(payload);
+        snackbar.success(t("type_created") || "Type created!");
       }
 
       closeDialog();
@@ -75,6 +80,11 @@ export default function TypesController() {
         err.response?.data?.detail || err.message || "Operation failed";
       setSubmitError(
         msg.includes("already exists") ? t("code_already_exists") : msg
+      );
+      snackbar.error(
+        msg.includes("already exists")
+          ? t("code_already_exists")
+          : t("operation_failed")
       );
     }
   };
@@ -106,26 +116,56 @@ export default function TypesController() {
   const handleBulkDelete = async () => {
     if (selectedRowIds.length === 0) return;
 
-    const confirmMsg =
-      selectedRowIds.length === 1
-        ? t("confirm_delete_single")
-        : t("confirm_delete_multiple", { count: selectedRowIds.length });
+    const count = selectedRowIds.length;
 
-    if (!window.confirm(confirmMsg)) return;
+    // Confirm dialog
+    const confirmed = await window.confirmDelete?.({
+      title: t("delete_confirmation"),
+      message: count === 1 ? t("confirm_delete_one") : t("confirm_delete_many"), // គ្មាន {count} ទេ
+    });
+
+    if (!confirmed) return;
 
     try {
-      await TypeService.bulkDelete(selectedRowIds);
+      const result = await TypeService.bulkDelete(selectedRowIds);
+
+      // Refresh UI
       setSelectedRowIds([]);
       fetchTypes();
+
+      // Success message
+      if (result.success.length > 0) {
+        snackbar.success(t("types_deleted")); // តែមួយឃ្លា: "បានលុបប្រភេទដោយជោគជ័យ"
+      }
+
+      // In use – show name only when exactly 1
+      if (result.inUse.length === 1) {
+        const usedTypeName =
+          rows.find((r) => r.id === result.inUse[0].id)?.name || "ប្រភេទនេះ";
+        snackbar.warning(`${t("type_in_use_single")}៖ «${usedTypeName}»`);
+      }
+      // More than 1 in use
+      else if (result.inUse.length > 1) {
+        snackbar.warning(t("types_in_use_multiple"));
+      }
+
+      // All selected are in use
+      if (result.success.length === 0 && result.inUse.length === count) {
+        snackbar.warning(t("all_types_in_use"));
+      }
+
+      // Other errors
+      if (result.failed.length > 0) {
+        snackbar.error(t("some_deletes_failed"));
+      }
     } catch (err) {
       console.error(err);
-      alert(t("error_deleting_types"));
+      snackbar.error(t("delete_failed"));
     }
   };
 
   const filteredRows = useMemo(() => {
     if (!search.trim()) return rows;
-
     const term = search.toLowerCase();
     return rows.filter(
       (row) =>
@@ -148,7 +188,6 @@ export default function TypesController() {
     setForm,
     formErrors,
     submitError,
-    filteredRows,
     openCreateDialog,
     handleEdit,
     closeDialog,

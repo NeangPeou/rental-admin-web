@@ -9,6 +9,7 @@ import SystemLogs from './pages/SystemLogs.jsx'
 import Layout from './components/Layout/index.jsx'
 import Profile from './pages/Profile.jsx'
 import Settings from './pages/Settings.jsx'
+import { ConfirmDelete } from './components/common/ConfirmDelete.jsx'
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
@@ -18,26 +19,29 @@ function PrivateRoute({ children }) {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route
-        path="/*"
-        element={
-          <PrivateRoute>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/owners" element={<Owners />} />
-                <Route path="/types" element={<Types />} />
-                <Route path="/utilities" element={<UtilityTypes />} />
-                <Route path="/logs" element={<SystemLogs />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/settings" element={<Settings />} />
-              </Routes>
-            </Layout>
-          </PrivateRoute>
-        }
-      />
-    </Routes>
+    <>
+      <ConfirmDelete />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/*"
+          element={
+            <PrivateRoute>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/owners" element={<Owners />} />
+                  <Route path="/types" element={<Types />} />
+                  <Route path="/utilities" element={<UtilityTypes />} />
+                  <Route path="/logs" element={<SystemLogs />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/settings" element={<Settings />} />
+                </Routes>
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+      </Routes>
+    </>
   )
 }

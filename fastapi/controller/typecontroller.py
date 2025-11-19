@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
-from db.models import property_types
+from db.models import property_types, properties
 from schemas.type import TypeCreate, TypeUpdate
 
 def create_type(db: Session, data: TypeCreate):
@@ -57,7 +57,17 @@ def delete_type(db: Session, type_id: int):
         db_type = db.get(property_types.PropertyType, type_id)
         if not db_type:
             raise HTTPException(status_code=404, detail="Type not found")
+        # -------add more checks before deletion-------
+        usage_count = db.query(properties.Property).filter(
+            properties.Property.type_id == type_id
+        ).count()
 
+        if usage_count > 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Type is in use and cannot be deleted"
+            )
+        # ------------------------------------
         return_data = {
             'id': str(db_type.id),
             'typeCode': db_type.type_code,

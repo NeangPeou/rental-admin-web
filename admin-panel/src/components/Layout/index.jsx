@@ -36,10 +36,10 @@ export default function Layout({ children }) {
           zIndex: (theme) => theme.zIndex.drawer + 1,
           background: darkMode
             ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
-            : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            : 'linear-gradient(135deg, #023F6BFF 100%, #023F6BFF 100%)',
           boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
           backdropFilter: 'blur(10px)',
-          borderBottom: '1px solid rgba(255,255,255,0.1)'
+          borderBottom: '1px solid rgba(255,255,255,0.1)',
         }}
       >
         <Toolbar>
@@ -56,7 +56,7 @@ export default function Layout({ children }) {
             variant="h5"
             sx={{
               flex: 1,
-              fontWeight: 800,
+              fontWeight: 500,
               letterSpacing: '0.5px',
               background: 'linear-gradient(90deg, #fff, #e0e7ff)',
               backgroundClip: 'text',
@@ -79,7 +79,7 @@ export default function Layout({ children }) {
                 fontWeight: 'bold'
               }}
             >
-              {user?.userName?.[0]?.toUpperCase() || 'A'}
+              {user?.userName?.[0]?.toUpperCase()}
             </Avatar>
           </Tooltip>
 
@@ -103,11 +103,13 @@ export default function Layout({ children }) {
               color: 'white',
               fontSize: '14px',
               outline: 'none',
-              backdropFilter: 'blur(10px)'
+              backdropFilter: 'blur(10px)',
+              cursor: 'pointer'
             }}
           >
-            <option value="en" style={{ color: '#000' }}>EN</option>
-            <option value="km" style={{ color: '#000' }}>ខ្មែរ</option>
+            <option value="en" style={{ color: '#000' }}>english</option>
+            <option value="km" style={{ color: '#000' }}>khmer</option>
+            <option value="fr" style={{ color: '#000' }}>french</option>
           </select>
 
           {/* Logout */}
