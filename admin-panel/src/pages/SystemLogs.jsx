@@ -261,13 +261,9 @@ export default function SystemLogs() {
           sx={{
             border: 'none',
             '& .MuiDataGrid-row:hover': {
-              bgcolor: alpha('#667eea', darkMode ? 0.15 : 0.07)
+              bgcolor: alpha('#667eea', darkMode ? 0.15 : 0.07),
+              cursor: 'pointer',
             },
-            '& .MuiDataGrid-columnHeaders': {
-              bgcolor: alpha('#667eea', 0.08),
-              fontWeight: 700,
-              textTransform: 'uppercase'
-            }
           }}
         />
       </Box>

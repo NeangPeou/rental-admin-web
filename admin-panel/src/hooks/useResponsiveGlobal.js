@@ -1,4 +1,3 @@
-// src/hooks/useResponsiveGlobal.js
 import { useTheme } from '@mui/material/styles'
 import { useMediaQuery } from '@mui/material'
 import { useEffect, useState } from 'react'

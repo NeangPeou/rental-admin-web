@@ -12,6 +12,7 @@ import {
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useSnackbar } from './Snackbar';
 import { useState } from 'react';
+import { t } from 'i18next';
 
 let resolvePromise;
 let rejectPromise;
@@ -60,7 +61,7 @@ export const ConfirmDelete = () => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCancel} sx={{ textTransform: 'none' }}>
-          Cancel
+          <Typography>{t("cancel")}</Typography>
         </Button>
         <Button
           onClick={handleConfirm}
@@ -69,7 +70,7 @@ export const ConfirmDelete = () => {
           startIcon={<DeleteForeverIcon />}
           sx={{ textTransform: 'none', fontWeight: 600 }}
         >
-          Delete
+          <Typography>{t("delete")}</Typography>
         </Button>
       </DialogActions>
     </Dialog>

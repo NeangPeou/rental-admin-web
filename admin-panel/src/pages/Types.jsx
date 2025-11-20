@@ -16,7 +16,6 @@ import {
   DialogActions,
   Stack,
   alpha,
-  useTheme,
   Drawer,
 } from '@mui/material'
 import {
@@ -32,7 +31,7 @@ import useResponsiveGlobal from '../hooks/useResponsiveGlobal' // ← Add this
 
 export default function Types() {
   const { t } = useTranslation()
-  const responsive = useResponsiveGlobal() // ← Use the hook
+  const responsive = useResponsiveGlobal()
 
   const {
     rows: filteredRows,
@@ -85,7 +84,7 @@ export default function Types() {
           sx={{
             fontWeight: 500,
             py: 0.5,
-            fontSize: responsive.isMobile ? '0.875rem' : '1rem',
+            fontSize: responsive.isMobile ? '0.69rem' : '0.8rem',
           }}
         >
           {params.value}
@@ -237,15 +236,15 @@ export default function Types() {
           rows={filteredRows}
           columns={columns}
           loading={loading}
-          checkboxSelection={!responsive.isMobile} // Disable checkbox on mobile for better UX
+          checkboxSelection
           disableRowSelectionOnClick
           onRowSelectionModelChange={setSelectedRowIds}
           rowSelectionModel={selectedRowIds}
           onRowDoubleClick={(params) => handleEdit(params.row)}
           initialState={{ pagination: { paginationModel: { pageSize: responsive.isMobile ? 10 : 25 } } }}
           pageSizeOptions={[10, 25, 50, 100]}
-          rowHeight={responsive.isMobile ? 52 : 44}
-          density={responsive.isMobile ? 'standard' : 'compact'}
+          rowHeight={44}
+          density={'compact'}
           slots={{
             loadingOverlay: LinearProgress,
             noRowsOverlay: NoRowsOverlay,
@@ -259,12 +258,30 @@ export default function Types() {
         />
       </Box>
 
-      {/* Responsive Dialog / Drawer */}
+      {/* Responsive Dialog / Drawer with enhanced (beautiful) dialog styling */}
       <FormContainer
         open={open}
-        onClose={closeDialog}
+        onClose={(event, reason) => {
+          if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+            closeDialog();
+          }
+        }}
         {...formContainerProps}
+        {...(!responsive.useDrawerOnMobile
+          ? {
+              PaperProps: {
+                sx: {
+                  borderRadius: 3,
+                  overflow: 'hidden',
+                  boxShadow: (theme) => theme.shadows[24],
+                  width: '100%',
+                  maxWidth: responsive.dialogMaxWidth,
+                },
+              },
+            }
+          : {})}
       >
+        {/* Drawer header remains compact for mobile */}
         {responsive.useDrawerOnMobile && (
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, borderBottom: 1, borderColor: 'divider' }}>
             <Typography variant="h6">
@@ -276,44 +293,88 @@ export default function Types() {
           </Box>
         )}
 
+        {/* Beautiful Dialog header for desktop/tablet */}
         {!responsive.useDrawerOnMobile && (
-          <DialogTitle>
-            {editId ? t('edit_type') : t('create_new_type')}
-          </DialogTitle>
+          <>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 2,
+                px: 3,
+                py: 2,
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Box
+                  sx={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 2,
+                    background: 'rgba(255,255,255,0.12)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <CategoryIcon />
+                </Box>
+                <Box>
+                  <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                    {editId ? t('edit_type') : t('create_new_type')}
+                  </Typography>
+                  <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                    {editId ? t('edit_type_subtitle') : t('create_type_subtitle')}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Button onClick={closeDialog} sx={{ minWidth: 'auto' }}>
+                <CloseIcon />
+              </Button>
+            </Box>
+          </>
         )}
 
-        <DialogContent sx={{ pb: 1 }}>
+        <DialogContent sx={{ pb: 1, px: { xs: 2, sm: 3 }, pt: { xs: 2, sm: 2 } }}>
           {submitError && <Alert severity="error" sx={{ mb: 2 }}>{submitError}</Alert>}
 
-          <TextField
-            autoFocus
-            margin="dense"
-            label={t('code')}
-            fullWidth
-            value={form.type_code}
-            onChange={(e) => setForm({ ...form, type_code: e.target.value })}
-            error={!!formErrors.type_code}
-            helperText={formErrors.type_code}
-            disabled={!!editId}
-            sx={{ mb: 2 }}
-          />
+          <Stack spacing={2}>
+            <TextField
+              margin="dense"
+              label={t('code')}
+              fullWidth
+              value={form.type_code}
+              onChange={(e) => setForm({ ...form, type_code: e.target.value })}
+              error={!!formErrors.type_code}
+              helperText={formErrors.type_code}
+              disabled={!!editId}
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
+            />
 
-          <TextField
-            margin="dense"
-            label={t('name')}
-            fullWidth
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            error={!!formErrors.name}
-            helperText={formErrors.name}
-          />
+            <TextField
+              margin="dense"
+              label={t('name')}
+              fullWidth
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              error={!!formErrors.name}
+              helperText={formErrors.name}
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
+            />
+          </Stack>
         </DialogContent>
 
-        <DialogActions sx={{ p: 2, pt: 1 }}>
-          <Button onClick={closeDialog} fullWidth={responsive.isMobile}>
+        <DialogActions sx={{ p: 2, pt: 1, gap: 1 }}>
+          <Button onClick={closeDialog} fullWidth={responsive.isMobile} sx={{ borderRadius: 3 }}>
             {t('cancel')}
           </Button>
-          <Button onClick={handleSubmit} variant="contained" fullWidth={responsive.isMobile}>
+          <Button onClick={handleSubmit} variant="contained" fullWidth={responsive.isMobile} sx={{ borderRadius: 3 }}>
             {editId ? t('update') : t('create')}
           </Button>
         </DialogActions>

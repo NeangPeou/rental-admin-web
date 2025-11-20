@@ -1,4 +1,15 @@
 {
+  "welcome_back": "សូមស្វាគមន៍ត្រឡប់មកកាន់!",
+  "manage_your_rental_system_efficiently_and_securely": "ការគ្រប់គ្រងប្រព័ន្ធជួលរបស់អ្នកយ៉ាងមានប្រសិទ្ធភាព និងសុវត្ថិភាព",
+  "username_required": "ត្រូវមានឈ្មោះអ្នកប្រើ",
+  "username_too_short": "ឈ្មោះអ្នកប្រើត្រូវមានអក្សរយ៉ាងហោចណាស់ 2 តួអក្សរ",
+  "password_required": "ត្រូវមានពាក្យសម្ងាត់",
+  "password_too_short": "ពាក្យសម្ងាត់ត្រូវមានអក្សរយ៉ាងហោចណាស់ 3 តួអក្សរ",
+  "login_to_your_account": "ចូលទៅកាន់គណនីរបស់អ្នក",
+  "login_failed": "ការចូលបរាជ័យ។ សូមព្យាយាមម្តងទៀត។",
+  "invalid_username": "ឈ្មោះអ្នកប្រើមិនត្រឹមត្រូវ",
+  "invalid_password": "ពាក្យសម្ងាត់មិនត្រឹមត្រូវ",
+  "only_admins_allowed": "មានតែអ្នកគ្រប់គ្រងប៉ុណ្ណោះដែលអាចចូលដំណើរការបាន",
   "dashboard": "ផ្ទាំងគ្រប់គ្រង",
   "login": "ចូលប្រើ",
   "username": "ឈ្មោះអ្នកប្រើ",
@@ -21,6 +32,7 @@
   "settings": "ការកំណត់",
   "appearance": "រូបរាង",
   "dark_mode": "ម៉ូដងងឹត",
+  "light_mode": "ម៉ូដភ្លឺ",
   "language": "ភាសា",
   "timezone": "របៀបម៉ោង",
   "notifications": "ការជូនដំណឹង",
@@ -88,5 +100,7 @@
   "some_deletes_failed": "ប្រភេទមួយចំនួនមិនអាចលុបបានដោយសារកំហុស",
   "delete_failed": "ការលុបបានបរាជ័យ",
   "error_fetching_types": "មិនអាចទាញយកប្រភេទអចលនទ្រព្យបានទេ",
-  "operation_failed": "ប្រតិបត្តិការបរាជ័យ"
+  "operation_failed": "ប្រតិបត្តិការបរាជ័យ",
+  "create_type_subtitle": "បញ្ចូលព័ត៌មានដើម្បីបង្កើតប្រភេទថ្មី",
+  "edit_type_subtitle": "កែប្រែព័ត៌មានរបស់ប្រភេទនេះ"
 }

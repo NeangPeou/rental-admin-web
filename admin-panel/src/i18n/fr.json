@@ -1,15 +1,24 @@
 {
+  "welcome_back": "Bienvenue de nouveau!",
+  "manage_your_rental_system_efficiently_and_securely": "Gérez votre système de location de manière efficace et sécurisée.",
+  "username_required": "Le nom d'utilisateur est requis",
+  "username_too_short": "Le nom d'utilisateur doit comporter au moins 2 caractères",
+  "password_required": "Le mot de passe est requis",
+  "password_too_short": "Le mot de passe doit comporter au moins 3 caractères",
+  "login_to_your_account": "Connectez-vous à votre compte",
+  "login_failed": "Échec de la connexion. Veuillez réessayer.",
+  "invalid_username": "Nom d'utilisateur invalide",
+  "invalid_password": "Mot de passe invalide",
+  "only_admins_allowed": "Seuls les administrateurs peuvent accéder à ce panneau",
   "dashboard": "Tableau de bord",
   "login": "Connexion",
-  "username": "Nom d’utilisateur",
+  "username": "Nom d'utilisateur",
   "password": "Mot de passe",
   "logout": "Déconnexion",
-
   "owners": "Propriétaires",
   "types": "Types de propriété",
   "utilities": "Types de services publics",
   "logs": "Journaux système",
-
   "profile": "Mon Profil",
   "change_photo": "Changer la photo",
   "phone": "Numéro de téléphone",
@@ -20,10 +29,10 @@
   "save_changes": "Enregistrer les modifications",
   "saving": "Enregistrement...",
   "profile_updated": "Profil mis à jour avec succès !",
-
   "settings": "Paramètres",
   "appearance": "Apparence",
   "dark_mode": "Mode sombre",
+  "light_mode": "Mode clair",
   "language": "Langue",
   "timezone": "Fuseau horaire",
   "notifications": "Notifications",
@@ -33,78 +42,64 @@
   "login_alert": "Alerte lors d’une nouvelle connexion",
   "save_settings": "Enregistrer les paramètres",
   "settings_saved": "Paramètres enregistrés avec succès !",
-
   "system_logs": "Journaux système",
   "view_all_system_activities": "Surveiller toutes les activités et événements du système",
   "search_logs": "Rechercher dans les journaux...",
   "no_logs_found": "Aucun journal trouvé",
   "logs_will_appear_here": "Les activités du système apparaîtront ici",
   "failed_to_load_logs": "Impossible de charger les journaux système",
-
   "user": "Utilisateur",
   "action": "Action",
   "type": "Type de journal",
   "message": "Message",
   "host": "Nom du type",
   "time": "Créé le",
-
   "type_created_success": "Type créé avec succès",
   "type_updated_success": "Type mis à jour avec succès",
   "error_deleting_types": "Échec de la suppression des types sélectionnés",
   "delete_selected": "Supprimer la sélection",
   "item_selected": "élément sélectionné",
   "items_selected": "éléments sélectionnés",
-
   "confirm_delete_single": "Êtes-vous sûr de vouloir supprimer ce type ?",
   "confirm_delete_multiple": "Êtes-vous sûr de vouloir supprimer ces types ?",
   "confirm_delete_warning": "Cette action est irréversible.",
   "action_irreversible": "Cette action est irréversible.",
   "delete_permanently": "Oui, supprimer",
-
   "type_deleted_success": "Type de propriété supprimé avec succès",
   "types_deleted_success": "Types de propriété supprimés",
-
   "type_in_use_cannot_delete": "Ce type est attribué à des propriétés et ne peut pas être supprimé",
-
   "property_types": "Types de propriété",
   "manage_property_type_definitions": "Gérer les définitions des types de propriété",
-
   "code": "Code",
   "name": "Nom",
   "search_types": "Rechercher des types...",
   "create_type": "Créer un type",
   "delete": "Supprimer",
-
   "no_types_found": "Aucun type de propriété trouvé",
   "no_types_found_search": "Essayez de modifier votre terme de recherche",
-
   "create_new_type": "Créer un nouveau type",
   "edit_type": "Modifier le type",
   "code_required": "Le code est requis",
   "name_required": "Le nom est requis",
   "code_already_exists": "Ce code existe déjà",
-
   "cancel": "Annuler",
   "create": "Créer",
   "update": "Mettre à jour",
-
   "type_created": "Type créé avec succès",
   "type_updated": "Type mis à jour avec succès",
   "type_deleted": "Type supprimé avec succès",
   "types_deleted": "Types supprimés avec succès",
-
   "confirm_delete_one": "Voulez-vous vraiment supprimer définitivement ce type ?",
   "confirm_delete_many": "Voulez-vous vraiment supprimer définitivement tous les types sélectionnés ? Cette action est irréversible.",
   "delete_confirmation": "Confirmer la suppression",
   "delete_types": "Supprimer les types",
-
   "type_in_use_single": "Ce type est actuellement utilisé et ne peut pas être supprimé",
   "types_in_use_multiple": "Certains types sont actuellement utilisés et ne peuvent pas être supprimés",
   "all_types_in_use": "Tous les types sélectionnés sont actuellement utilisés et ne peuvent pas être supprimés",
-
   "some_deletes_failed": "Certains types n’ont pas pu être supprimés en raison d’une erreur",
   "delete_failed": "La suppression a échoué",
-
   "error_fetching_types": "Impossible de charger les types de propriété",
-  "operation_failed": "Échec de l’opération"
+  "operation_failed": "Échec de l’opération",
+  "create_type_subtitle": "Remplissez les informations pour créer un nouveau type.",
+  "edit_type_subtitle": "Mettez à jour les informations de ce type."
 }

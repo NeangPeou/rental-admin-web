@@ -1,4 +1,15 @@
 {
+  "welcome_back": "Welcome Back!",
+  "manage_your_rental_system_efficiently_and_securely": "Manage your rental system efficiently and securely.",
+  "username_required": "Username is required",
+  "username_too_short": "Username must be at least 2 characters",
+  "password_required": "Password is required",
+  "password_too_short": "Password must be at least 3 characters",
+  "login_to_your_account": "Sign in to your account",
+  "login_failed": "Login failed. Please try again.",
+  "invalid_username": "Invalid username",
+  "invalid_password": "Invalid password",
+  "only_admins_allowed": "Only administrators can access this panel",
   "dashboard": "Dashboard",
   "login": "Login",
   "username": "Username",
@@ -21,6 +32,7 @@
   "settings": "Settings",
   "appearance": "Appearance",
   "dark_mode": "Dark Mode",
+  "light_mode": "Light Mode",
   "language": "Language",
   "timezone": "Timezone",
   "notifications": "Notifications",
@@ -87,5 +99,7 @@
   "some_deletes_failed": "Some types could not be deleted due to an error",
   "delete_failed": "Delete operation failed",
   "error_fetching_types": "Failed to load property types",
-  "operation_failed": "Operation failed"
+  "operation_failed": "Operation failed",
+  "create_type_subtitle": "Fill in the details to create a new type.",
+  "edit_type_subtitle": "Update the details of this type."
 }
