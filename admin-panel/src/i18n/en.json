@@ -101,5 +101,6 @@
   "error_fetching_types": "Failed to load property types",
   "operation_failed": "Operation failed",
   "create_type_subtitle": "Fill in the details to create a new type.",
-  "edit_type_subtitle": "Update the details of this type."
+  "edit_type_subtitle": "Update the details of this type.",
+  "no_logs_found_search": "Try adjusting your search term"
 }

@@ -11,7 +11,6 @@ import {
   TextField,
   InputAdornment,
   Dialog,
-  DialogTitle,
   DialogContent,
   DialogActions,
   Stack,
@@ -61,16 +60,19 @@ export default function Types() {
       headerName: t('code'),
       width: responsive.isMobile ? 100 : 180,
       renderCell: (params) => (
-        <Chip
-          label={params.value}
-          size="small"
-          color="primary"
-          variant="outlined"
-          sx={{
-            fontWeight: 600,
-            fontSize: responsive.isMobile ? '0.69rem' : '0.8rem',
-          }}
-        />
+        <Typography component="div">
+          <Chip
+            label={params.value}
+            size="small"
+            color="primary"
+            variant="outlined"
+            sx={{
+              fontWeight: 600,
+              fontSize: responsive.isMobile ? '0.69rem' : '0.8rem',
+            }}
+          />
+        </Typography>
+        
       ),
     },
     {
@@ -80,10 +82,10 @@ export default function Types() {
       minWidth: responsive.isMobile ? 150 : 200,
       renderCell: (params) => (
         <Typography
-          variant="body2"
+          noWrap
+          variant
           sx={{
             fontWeight: 500,
-            py: 0.5,
             fontSize: responsive.isMobile ? '0.69rem' : '0.8rem',
           }}
         >

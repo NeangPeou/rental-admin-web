@@ -101,5 +101,6 @@
   "error_fetching_types": "Impossible de charger les types de propriété",
   "operation_failed": "Échec de l’opération",
   "create_type_subtitle": "Remplissez les informations pour créer un nouveau type.",
-  "edit_type_subtitle": "Mettez à jour les informations de ce type."
+  "edit_type_subtitle": "Mettez à jour les informations de ce type.",
+  "no_logs_found_search": "Essayez de modifier votre terme de recherche"
 }
