@@ -68,7 +68,7 @@ export default function Types() {
             variant="outlined"
             sx={{
               fontWeight: 600,
-              fontSize: responsive.isMobile ? '0.69rem' : '0.8rem',
+              fontSize: responsive.isMobile ? '0.75rem' : '0.75rem',
             }}
           />
         </Typography>
@@ -86,7 +86,7 @@ export default function Types() {
           variant
           sx={{
             fontWeight: 500,
-            fontSize: responsive.isMobile ? '0.69rem' : '0.8rem',
+            fontSize: responsive.isMobile ? '0.75rem' : '0.75rem',
           }}
         >
           {params.value}

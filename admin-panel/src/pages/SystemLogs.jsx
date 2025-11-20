@@ -70,7 +70,7 @@ export default function SystemLogs() {
       renderCell: (params) => (
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Person sx={{ fontSize: 16, opacity: 0.7, color: "text.secondary" }} />
-          <Typography variant="body3" noWrap>
+          <Typography variant="body3" fontSize={13} noWrap>
             {params.row.userName}
           </Typography>
         </Box>
@@ -86,7 +86,7 @@ export default function SystemLogs() {
             fontWeight: 500,
             color: "primary.main",
             textTransform: "capitalize",
-            fontSize: responsive.isMobile ? "0.75rem" : "0.875rem",
+            fontSize: responsive.isMobile ? "0.75rem" : "0.75rem",
           }}
           variant="body3" 
           noWrap
@@ -122,7 +122,7 @@ export default function SystemLogs() {
           variant="body3"
           sx={{
             fontFamily: '"Roboto Mono", monospace',
-            fontSize: responsive.isMobile ? "0.75rem" : "0.875rem",
+            fontSize: responsive.isMobile ? "0.75rem" : "0.75rem",
             lineHeight: 1.5,
           }}
         >
@@ -136,7 +136,12 @@ export default function SystemLogs() {
       width: responsive.isMobile ? 120 : 150,
       renderCell: (params) => (
         <Typography component="div">
-          <Chip label={params.value} size="small" variant="outlined" />
+          <Chip 
+          label={params.value} 
+          size="small" 
+          variant="outlined" 
+          sx={{ fontSize: "0.7rem" }}
+          />
         </Typography>
       ),
     },
@@ -146,7 +151,12 @@ export default function SystemLogs() {
       width: responsive.isMobile ? 140 : 180,
       renderCell: (params) => (
         <Typography component="div">
-          <Chip label={params.value} size="small" variant="outlined" />
+          <Chip 
+            label={params.value} 
+            size="small" 
+            variant="outlined" 
+            sx={{ fontSize: "0.7rem" }}
+          />
         </Typography>
       ),
     },
