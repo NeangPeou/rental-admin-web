@@ -73,7 +73,7 @@
   "code": "Code",
   "name": "Name",
   "search_types": "Search types...",
-  "create_type": "Create Type",
+  "create_type": "Create",
   "delete": "Delete",
   "no_types_found": "No property types found",
   "no_types_found_search": "Try adjusting your search term",
@@ -102,5 +102,18 @@
   "operation_failed": "Operation failed",
   "create_type_subtitle": "Fill in the details to create a new type.",
   "edit_type_subtitle": "Update the details of this type.",
-  "no_logs_found_search": "Try adjusting your search term"
+  "no_logs_found_search": "Try adjusting your search term",
+  "utility_types": "Utility Types",
+  "manage_utility_type_definitions": "Manage utility type definitions (water, electricity, internet...)",
+  "create_new_utility_type": "Create New Utility Type",
+  "edit_utility_type": "Edit Utility Type",
+  "enter_utility_type_name": "Enter the name of the utility type",
+  "name_already_exists": "This name already exists",
+  "search_utility_types": "Search utility types...",
+  "no_utility_types_found": "No utility types found",
+  "no_results_for_search": "No results match your search",
+  "utility_type_created": "Utility type created successfully",
+  "utility_type_updated": "Utility type updated successfully",
+  "utility_types_deleted": "Utility types deleted successfully",
+  "error_fetching_utility_types": "Failed to load utility types"
 }

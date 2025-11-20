@@ -73,7 +73,7 @@
   "code": "Code",
   "name": "Nom",
   "search_types": "Rechercher des types...",
-  "create_type": "Créer un type",
+  "create_type": "Créer un",
   "delete": "Supprimer",
   "no_types_found": "Aucun type de propriété trouvé",
   "no_types_found_search": "Essayez de modifier votre terme de recherche",
@@ -102,5 +102,18 @@
   "operation_failed": "Échec de l’opération",
   "create_type_subtitle": "Remplissez les informations pour créer un nouveau type.",
   "edit_type_subtitle": "Mettez à jour les informations de ce type.",
-  "no_logs_found_search": "Essayez de modifier votre terme de recherche"
+  "no_logs_found_search": "Essayez de modifier votre terme de recherche",
+  "utility_types": "Types de services",
+  "manage_utility_type_definitions": "Gérer les définitions des types de services (eau, électricité, internet...)",
+  "create_new_utility_type": "Créer un nouveau type de service",
+  "edit_utility_type": "Modifier le type de service",
+  "enter_utility_type_name": "Saisissez le nom du type de service",
+  "name_already_exists": "Ce nom existe déjà",
+  "search_utility_types": "Rechercher des types de services...",
+  "no_utility_types_found": "Aucun type de service trouvé",
+  "no_results_for_search": "Aucun résultat ne correspond à votre recherche",
+  "utility_type_created": "Type de service créé avec succès",
+  "utility_type_updated": "Type de service modifié avec succès",
+  "utility_types_deleted": "Types de service supprimés avec succès",
+  "error_fetching_utility_types": "Échec du chargement des types de service"
 }

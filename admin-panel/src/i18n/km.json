@@ -74,7 +74,7 @@
   "code": "កូដ",
   "name": "ឈ្មោះ",
   "search_types": "ស្វែងរកប្រភេទ...",
-  "create_type": "បង្កើតប្រភេទ",
+  "create_type": "បង្កើត",
   "delete": "លុប",
   "no_types_found": "រកមិនឃើញប្រភេទអចលនទ្រព្យ",
   "no_types_found_search": "សូមសាកល្បងផ្លាស់ប្តូរពាក្យស្វែងរក",
@@ -103,5 +103,18 @@
   "operation_failed": "ប្រតិបត្តិការបរាជ័យ",
   "create_type_subtitle": "បញ្ចូលព័ត៌មានដើម្បីបង្កើតប្រភេទថ្មី",
   "edit_type_subtitle": "កែប្រែព័ត៌មានរបស់ប្រភេទនេះ",
-  "no_logs_found_search": "សូមសាកល្បងផ្លាស់ប្តូរពាក្យស្វែងរក"
+  "no_logs_found_search": "សូមសាកល្បងផ្លាស់ប្តូរពាក្យស្វែងរក",
+  "utility_types": "ប្រភេទសេវាកម្ម",
+  "manage_utility_type_definitions": "គ្រប់គ្រងប្រភេទសេវាកម្ម (ទឹក ភ្លើង អ៊ីនធឺណិត...)",
+  "create_new_utility_type": "បង្កើតប្រភេទសេវាកម្មថ្មី",
+  "edit_utility_type": "កែប្រែប្រភេទសេវាកម្ម",
+  "enter_utility_type_name": "បញ្ចូលឈ្មោះប្រភេទសេវាកម្ម",
+  "name_already_exists": "ឈ្មោះនេះមានរួចហើយ",
+  "search_utility_types": "ស្វែងរកប្រភេទសេវាកម្ម...",
+  "no_utility_types_found": "មិនមានប្រភេទសេវាកម្មទេ",
+  "no_results_for_search": "មិនមានលទ្ធផលត្រូវនឹងការស្វែងរក",
+  "utility_type_created": "បានបង្កើតប្រភេទសេវាកម្មដោយជោគជ័យ",
+  "utility_type_updated": "បានកែប្រែប្រភេទសេវាកម្មដោយជោគជ័យ",
+  "utility_types_deleted": "បានលុបប្រភេទសេវាកម្មដោយជោគជ័យ",
+  "error_fetching_utility_types": "មិនអាចទាញយកប្រភេទសេវាកម្មបានទេ"
 }

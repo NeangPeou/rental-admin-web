@@ -38,6 +38,13 @@ def get_all_utility_types(db: Session, current_user):
         raise HTTPException(status_code=500, detail=f"Error fetching utility types: {str(e)}")
 
 def update_utility_type(db: Session, utility_type_id: int, data: UtilityTypeUpdate):
+    
+    # add check for existing name
+    existing = db.query(utility_types.UtilityType).filter(utility_types.UtilityType.name == data.name).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Utility type already exists")
+    #--------------------------------------------------------------------------------------------------------
+
     db_utility_type = db.get(utility_types.UtilityType, utility_type_id)
     if not db_utility_type:
         raise HTTPException(status_code=404, detail="Utility type not found")

@@ -17,7 +17,7 @@ export default function Dashboard() {
     { label: t('owners'), value: 12, icon: <People />, color: '#667eea', progress: 78 },
     { label: t('renters'), value: 48, icon: <People />, color: '#764ba2', progress: 65 },
     { label: t('units'), value: 36, icon: <Apartment />, color: '#f093fb', progress: 82 },
-    { label: t('revenue'), value: '$12000', icon: <AttachMoney />, color: '#4facfe', progress: 90 }
+    { label: t('revenue'), value: 40, icon: <AttachMoney />, color: '#4facfe', progress: 90 }
   ]
 
   return (
