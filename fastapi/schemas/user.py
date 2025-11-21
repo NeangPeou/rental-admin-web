@@ -61,7 +61,7 @@ class TokenResponse(BaseModel):
     user: UserResponse
 
 class UpdateUser(BaseModel):
-    # id: int
+    id: Optional[int] = None 
     username: Optional[str] = None
     password: Optional[str] = None
     phoneNumber: Optional[str] = None

@@ -102,6 +102,9 @@ export default function Profile() {
               value={form.username}
               onChange={e => setForm({ ...form, username: e.target.value })}
               size="small"
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
             />
             <TextField
               fullWidth
@@ -109,6 +112,9 @@ export default function Profile() {
               value={form.phoneNumber}
               onChange={e => setForm({ ...form, phoneNumber: e.target.value })}
               size="small"
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
             />
             <TextField
               fullWidth
@@ -116,6 +122,9 @@ export default function Profile() {
               value={form.passport}
               onChange={e => setForm({ ...form, passport: e.target.value })}
               size="small"
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
             />
             <TextField
               fullWidth
@@ -123,8 +132,16 @@ export default function Profile() {
               value={form.idCard}
               onChange={e => setForm({ ...form, idCard: e.target.value })}
               size="small"
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
             />
-            <FormControl fullWidth size="small">
+            <FormControl 
+              fullWidth size="small"
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
+            >
               <InputLabel>{t('gender')}</InputLabel>
               <Select
                 value={form.gender}
@@ -143,13 +160,19 @@ export default function Profile() {
               value={form.address}
               onChange={e => setForm({ ...form, address: e.target.value })}
               size="small"
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
             />
             <Button
               type="submit"
               variant="contained"
-              size="large"
+              size="small"
               disabled={loading}
-              sx={{ width: '100%', py: 1.5 }}
+              sx={{ 
+                width: '100%',
+                borderRadius: 3 
+              }}
             >
               {loading ? <CircularProgress size={24} /> : t('save_changes')}
             </Button>
