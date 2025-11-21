@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TypeService from "../services/TypeService";
 import { useSnackbar } from "../components/common/Snackbar";
-import { ConfirmDelete } from "../components/common/ConfirmDelete";
 
 export default function TypesController() {
   const { t } = useTranslation();

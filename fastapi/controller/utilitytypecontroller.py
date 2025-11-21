@@ -40,7 +40,7 @@ def get_all_utility_types(db: Session, current_user):
 def update_utility_type(db: Session, utility_type_id: int, data: UtilityTypeUpdate):
     
     # add check for existing name
-    existing = db.query(utility_types.UtilityType).filter(utility_types.UtilityType.name == data.name).first()
+    existing = (db.query(utility_types.UtilityType).filter(utility_types.UtilityType.name == data.name, utility_types.UtilityType.id != utility_type_id).first())
     if existing:
         raise HTTPException(status_code=400, detail="Utility type already exists")
     #--------------------------------------------------------------------------------------------------------
