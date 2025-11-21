@@ -69,7 +69,7 @@ export default function Owners() {
       minWidth: 120,
       width: responsive.isMobile ? 100 : 180,
       renderCell: (params) => (
-        <Typography component="div">
+        <Typography component="div" variant="">
           <Chip
             label={params.value}
             size="small"
@@ -89,7 +89,7 @@ export default function Owners() {
       headerName: t("gender"),
       width: responsive.isMobile ? 100 : 180,
       renderCell: (p) => (
-        <Typography component="div">
+        <Typography component="div" variant="">
           <Chip
             icon={p.value === "Male" ? <MaleIcon /> : <FemaleIcon />}
             label={t(p.value.toLowerCase())}
@@ -111,7 +111,7 @@ export default function Owners() {
       renderCell: (params) => (
         <Typography
           noWrap
-          variant
+          variant=""
           sx={{
             fontWeight: 500,
             fontSize: responsive.isMobile ? '0.75rem' : '0.75rem',
@@ -128,7 +128,7 @@ export default function Owners() {
       renderCell: (params) => (
         <Typography
           noWrap
-          variant
+          variant=""
           sx={{
             fontWeight: 500,
             fontSize: responsive.isMobile ? '0.75rem' : '0.75rem',
@@ -145,7 +145,7 @@ export default function Owners() {
       renderCell: (params) => (
         <Typography
           noWrap
-          variant
+          variant=""
           sx={{
             fontWeight: 500,
             fontSize: responsive.isMobile ? '0.75rem' : '0.75rem',
@@ -163,7 +163,7 @@ export default function Owners() {
       renderCell: (params) => (
         <Typography
           noWrap
-          variant="body3"
+          variant=""
           sx={{
             fontWeight: 500,
             fontSize: responsive.isMobile ? '0.75rem' : '0.75rem',
@@ -415,52 +415,58 @@ export default function Owners() {
           </Box>
         )}
 
-        <DialogContent sx={{ px: { xs: 2, sm: 3 }, pt: 2 }}>
-          {formError && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {formError}
-            </Alert>
-          )}
-          <Stack spacing={2.5}>
+        <DialogContent sx={{ px: { xs: 2, sm: 3 }, pt: 0.6 }}>
+          <Stack spacing={1.5}>
             <TextField
               label={t("username")}
               fullWidth
+              error={!!formError && formError.toLowerCase().includes("username")}
+              helperText={formError && formError.toLowerCase().includes("username") ? formError : ""}
               value={openCreate ? createForm.username : updateForm.username}
               onChange={(e) =>
                 openCreate
                   ? setCreateForm((p) => ({ ...p, username: e.target.value }))
                   : setUpdateForm((p) => ({ ...p, username: e.target.value }))
               }
+              required
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
             />
             <TextField
               label={t("password")}
               type="password"
               fullWidth
+              error={!!formError && formError.toLowerCase().includes("password")}
+              helperText={formError && formError.toLowerCase().includes("password") ? formError : ""}
               value={openCreate ? createForm.password : updateForm.password}
               onChange={(e) =>
                 openCreate
                   ? setCreateForm((p) => ({ ...p, password: e.target.value }))
                   : setUpdateForm((p) => ({ ...p, password: e.target.value }))
               }
-              helperText={openCreate ? t("required") : t("leave_empty_to_keep")}
+              required
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
             />
             <TextField
               label={t("phone")}
               fullWidth
+              error={!!formError && formError.toLowerCase().includes("phone")}
+              helperText={formError && formError.toLowerCase().includes("phone") ? formError : ""}
               value={
                 openCreate ? createForm.phoneNumber : updateForm.phoneNumber
               }
               onChange={(e) =>
                 openCreate
-                  ? setCreateForm((p) => ({
-                      ...p,
-                      phoneNumber: e.target.value,
-                    }))
-                  : setUpdateForm((p) => ({
-                      ...p,
-                      phoneNumber: e.target.value,
-                    }))
+                  ? setCreateForm((p) => ({...p, phoneNumber: e.target.value}))
+                  : setUpdateForm((p) => ({...p, phoneNumber: e.target.value}))
               }
+              required
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
             />
             <TextField
               label={t("passport")}
@@ -471,6 +477,9 @@ export default function Owners() {
                   ? setCreateForm((p) => ({ ...p, passport: e.target.value }))
                   : setUpdateForm((p) => ({ ...p, passport: e.target.value }))
               }
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
             />
             <TextField
               label={t("id_card")}
@@ -481,18 +490,24 @@ export default function Owners() {
                   ? setCreateForm((p) => ({ ...p, idCard: e.target.value }))
                   : setUpdateForm((p) => ({ ...p, idCard: e.target.value }))
               }
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
             />
             <TextField
               label={t("address")}
               fullWidth
               multiline
-              rows={2}
+              rows={1.5}
               value={openCreate ? createForm.address : updateForm.address}
               onChange={(e) =>
                 openCreate
                   ? setCreateForm((p) => ({ ...p, address: e.target.value }))
                   : setUpdateForm((p) => ({ ...p, address: e.target.value }))
               }
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
             />
             <TextField
               select
@@ -504,6 +519,9 @@ export default function Owners() {
                   ? setCreateForm((p) => ({ ...p, gender: e.target.value }))
                   : setUpdateForm((p) => ({ ...p, gender: e.target.value }))
               }
+              sx={{
+                "& .MuiInputBase-root": { borderRadius: 3 },
+              }}
             >
               {GENDERS.map((g) => (
                 <MenuItem key={g} value={g}>

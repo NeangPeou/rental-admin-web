@@ -146,5 +146,10 @@
   "owners_in_use_multiple": "Certains propriétaires ne peuvent pas être supprimés car ils sont utilisés",
   "all_owners_in_use": "Tous les propriétaires sélectionnés sont utilisés et ne peuvent pas être supprimés",
   "owner_some_deletes_failed": "Certains propriétaires n'ont pas pu être supprimés",
-  "realtime_offline": "Mises à jour en temps réel hors ligne. Rafraîchissez pour synchroniser."
+  "realtime_offline": "Mises à jour en temps réel hors ligne. Rafraîchissez pour synchroniser.",
+  "username_min_3": "Le nom d'utilisateur doit comporter au moins 3 caractères",
+  "password_min_4": "Le mot de passe doit comporter au moins 4 caractères",
+  "phone_required": "Le numéro de téléphone est requis",
+  "phone_only_number" : "Phone number can only contain digits",
+  "phone_min_8": "Le numéro de téléphone doit comporter au moins 8 chiffres"
 }

@@ -19,7 +19,6 @@ export default function OwnersController() {
   const [search, setSearch] = useState("");
   const [selectedRowIds, setSelectedRowIds] = useState([]);
 
-  // Form states
   const [openCreate, setOpenCreate] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -31,6 +30,7 @@ export default function OwnersController() {
   const [updateForm, setUpdateForm] = useState({
     username: "", password: "", phoneNumber: "", passport: "", idCard: "", address: "", gender: "Male"
   });
+
   const [formError, setFormError] = useState("");
 
   const GENDERS = ["Male", "Female"];
@@ -93,7 +93,9 @@ export default function OwnersController() {
   }, []);
 
   const resetCreateForm = () => {
-    setCreateForm({ username: "", password: "", phoneNumber: "", passport: "", idCard: "", address: "", gender: "Male" });
+    setCreateForm({
+      username: "", password: "", phoneNumber: "", passport: "", idCard: "", address: "", gender: "Male"
+    });
     setFormError("");
   };
 
@@ -125,23 +127,43 @@ export default function OwnersController() {
     setOpenDelete(true);
   };
 
+  const validateForm = (form) => {
+    if (!form.username?.trim()) return t("username_required");
+    if (form.username.length < 3) return t("username_min_3");
+
+    if (openCreate && !form.password?.trim())
+      return t("password_required");
+    if (form.password && form.password.length < 4)
+      return t("password_min_4");
+
+    if (!form.phoneNumber?.trim()) return t("phone_required");
+    if (!/^[0-9]+$/.test(form.phoneNumber))
+      return t("phone_only_number");
+    if (form.phoneNumber.length < 8)
+      return t("phone_min_8");
+
+    return null;
+  };
+
+
   const handleCreate = async () => {
-    setFormError("");
-    if (!createForm.username.trim() || !createForm.password.trim()) {
-      setFormError(t("username_and_password_required"));
+    const error = validateForm(createForm, false);
+    if (error) {
+      setFormError(error);
       return;
     }
 
     try {
       await OwnersService.create({
-        username: createForm.username.trim(),
-        password: createForm.password,
+        username: createForm.username || null,
+        password: createForm.password || null,
         phoneNumber: createForm.phoneNumber || null,
         passport: createForm.passport || null,
         idCard: createForm.idCard || null,
         address: createForm.address || null,
         gender: createForm.gender,
       });
+
       setOpenCreate(false);
       snackbar.success(t("owner_created"));
     } catch (err) {
@@ -150,21 +172,20 @@ export default function OwnersController() {
   };
 
   const handleUpdate = async () => {
-    setFormError("");
-    const payload = {};
-
-    if (updateForm.username.trim() && updateForm.username !== (selectedOwner.userID || "")) payload.username = updateForm.username.trim();
-    if (updateForm.password) payload.password = updateForm.password;
-    if (updateForm.phoneNumber !== (selectedOwner.phoneNumber || "")) payload.phoneNumber = updateForm.phoneNumber || null;
-    if (updateForm.passport !== (selectedOwner.passport || "")) payload.passport = updateForm.passport || null;
-    if (updateForm.idCard !== (selectedOwner.idCard || "")) payload.idCard = updateForm.idCard || null;
-    if (updateForm.address !== (selectedOwner.address || "")) payload.address = updateForm.address || null;
-    if (updateForm.gender !== selectedOwner.gender) payload.gender = updateForm.gender;
-
-    if (Object.keys(payload).length === 0) {
-      setOpenUpdate(false);
+    const error = validateForm(updateForm, true);
+    if (error) {
+      setFormError(error);
       return;
     }
+    const payload = {};
+
+    if (updateForm.username !== selectedOwner.userID) payload.username = updateForm.username || null;
+    if (updateForm.password) payload.password = updateForm.password;
+    if (updateForm.phoneNumber !== selectedOwner.phoneNumber) payload.phoneNumber = updateForm.phoneNumber || null;
+    if (updateForm.passport !== selectedOwner.passport) payload.passport = updateForm.passport || null;
+    if (updateForm.idCard !== selectedOwner.idCard) payload.idCard = updateForm.idCard || null;
+    if (updateForm.address !== selectedOwner.address) payload.address = updateForm.address || null;
+    if (updateForm.gender !== selectedOwner.gender) payload.gender = updateForm.gender;
 
     try {
       await OwnersService.update(selectedOwner.id, payload);
@@ -175,7 +196,6 @@ export default function OwnersController() {
     }
   };
 
-  // EXACTLY LIKE TypesController — with inUse detection
   const handleBulkDelete = async () => {
     if (selectedRowIds.length === 0 && !selectedOwner) return;
 
@@ -194,27 +214,17 @@ export default function OwnersController() {
     try {
       const result = await OwnersService.bulkDelete(idsToDelete);
 
-      // Refresh data
       fetchOwners();
       setSelectedRowIds([]);
       setSelectedOwner(null);
       setOpenDelete(false);
 
-      // Success feedback
       if (result.success.length > 0) {
         snackbar.success(t("owners_deleted_success", { count: result.success.length }));
       }
 
-      // In use warning
-      if (result.inUse.length === 1) {
-        const usedOwner = rows.find(r => r.id === result.inUse[0].id);
-        snackbar.warning(t("owner_in_use_single", { name: usedOwner?.userName || "Owner" }));
-      } else if (result.inUse.length > 1) {
+      if (result.inUse.length > 0) {
         snackbar.warning(t("owners_in_use_multiple"));
-      }
-
-      if (result.success.length === 0 && result.inUse.length === count) {
-        snackbar.warning(t("all_owners_in_use"));
       }
 
       if (result.failed.length > 0) {
@@ -258,7 +268,7 @@ export default function OwnersController() {
     handleDeleteOpen,
     handleCreate,
     handleUpdate,
-    handleBulkDelete,  // Now used in UI
+    handleBulkDelete,
     setOpenCreate,
     setOpenUpdate,
     setOpenDelete,
