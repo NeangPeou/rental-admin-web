@@ -71,7 +71,8 @@ export default function OwnersController() {
           setRows(prev => prev.map(r => r.id === msg.id ? { ...msg.data, id: msg.id } : r));
         }
         if (msg.action === "delete") {
-          setRows(prev => prev.filter(r => r.id !== msg.id));
+          const deletedId = msg.data?.id || msg.id;
+          setRows(prev => prev.filter(r => r.id !== deletedId));
         }
       };
 
