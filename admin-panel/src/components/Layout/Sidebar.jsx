@@ -1,12 +1,22 @@
-import { List, ListItemButton, ListItemIcon, ListItemText, Divider, Box, Typography } from '@mui/material'
+// layout/Sidebar.jsx
 import {
-  Dashboard, People, Category, Build, History, Person, Settings, Logout
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  Box,
+  Typography,
+  Tooltip,
+} from '@mui/material'
+import {
+  Dashboard, People, Category, Build, History, Person, Settings,
 } from '@mui/icons-material'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '../../context/ThemeContext.jsx'
 
-export default function Sidebar() {
+export default function Sidebar({ collapsed = false }) {
   const { t } = useTranslation()
   const { darkMode } = useTheme()
   const location = useLocation()
@@ -23,73 +33,65 @@ export default function Sidebar() {
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* Logo Area */}
-      <Box sx={{ p: 2, textAlign: 'center' }}>
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: 900,
-            background: darkMode
-              ? 'linear-gradient(45deg, #667eea, #764ba2)'
-              : 'linear-gradient(45deg, #667eea, #764ba2)',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
-          }}
-        >
-          Admin
-        </Typography>
-        <Typography variant="caption" color="text.secondary">
-          Admin Panel
-        </Typography>
+      {/* Logo */}
+      <Box sx={{ p: 2, textAlign: 'center', minHeight: 64, display: 'flex', alignItems: 'center', justifyContent: collapsed ? 'center' : 'center' }}>
+        {collapsed ? (
+          <Box sx={{ width: 40, height: 40, borderRadius: 2, background: 'linear-gradient(45deg, #667eea, #764ba2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Typography variant="h6" color="white" fontWeight={900}>A</Typography>
+          </Box>
+        ) : (
+          <>
+            <Typography variant="h6" sx={{ fontWeight: 900, background: 'linear-gradient(45deg, #667eea, #764ba2)', backgroundClip: 'text', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              Admin
+            </Typography>
+            <Typography variant="caption" color="text.secondary" sx={{ ml: 0.5 }}>Panel</Typography>
+          </>
+        )}
       </Box>
 
       <Divider sx={{ mx: 1, opacity: 0.5 }} />
 
-      {/* Menu */}
+      {/* Menu Items */}
       <List sx={{ flexGrow: 1, pt: 1 }}>
         {menuItems.map((item) => {
           const isActive = location.pathname === item.to
-          return (
+          const button = (
             <ListItemButton
-              key={item.text}
               component={Link}
               to={item.to}
               sx={{
                 mx: 1,
-                my: 1,
+                my: 0.8,
                 borderRadius: 3,
-                background: isActive
-                  ? (darkMode ? 'rgba(102, 126, 234, 0.2)' : 'rgba(102, 126, 234, 0.2)')
-                  : 'transparent',
+                justifyContent: collapsed ? 'center' : 'flex-start',
+                px: collapsed ? 0 : 2,
+                background: isActive ? 'rgba(102, 126, 234, 0.25)' : 'transparent',
                 color: isActive ? '#667eea' : 'text.primary',
                 fontWeight: isActive ? 700 : 500,
-                boxShadow: isActive ? '0 4px 15px rgba(102, 126, 234, 0.2)' : 'none',
+                minHeight: 48,
                 transition: 'all 0.3s ease',
-                '&:hover': {
-                  background: darkMode ? 'rgba(102, 126, 234, 0.15)' : 'rgba(102, 126, 234, 0.08)',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
-                }
+                '&:hover': { background: 'rgba(102, 126, 234, 0.15)', transform: 'translateY(-2px)' },
               }}
             >
-              <ListItemIcon
-                sx={{
-                  color: isActive ? '#667eea' : 'inherit',
-                  minWidth: 45
-                }}
-              >
+              <ListItemIcon sx={{ color: isActive ? '#667eea' : 'inherit', minWidth: collapsed ? 'auto' : 45, mr: collapsed ? 0 : 2 }}>
                 {item.icon}
               </ListItemIcon>
-              <ListItemText primary={item.text} />
+              {!collapsed && <ListItemText primary={item.text} />}
             </ListItemButton>
+          )
+
+          return collapsed ? (
+            <Tooltip key={item.text} title={item.text} placement="right">
+              {button}
+            </Tooltip>
+          ) : (
+            <Box key={item.text}>{button}</Box>
           )
         })}
       </List>
 
       <Divider sx={{ mx: 1, opacity: 0.5 }} />
 
-      {/* Footer */}
       <Box sx={{ p: 2, textAlign: 'center' }}>
         <Typography variant="caption" color="text.secondary">
           © 2025 Rental Admin
