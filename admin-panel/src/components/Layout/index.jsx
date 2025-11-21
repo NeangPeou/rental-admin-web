@@ -1,4 +1,3 @@
-// src/layout/Layout.jsx
 import {
   Box,
   AppBar,
@@ -7,9 +6,7 @@ import {
   IconButton,
   Drawer,
   Tooltip,
-  Avatar,
-  Stack,
-  useScrollTrigger,
+  Avatar
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import LogoutIcon from '@mui/icons-material/Logout'
@@ -21,144 +18,112 @@ import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useTheme } from '../../context/ThemeContext.jsx'
 import { useTranslation } from 'react-i18next'
-import useResponsiveGlobal from '../../hooks/useResponsiveGlobal.js' // ← Import it!
 
-const drawerWidth = 260
-
-// Optional: Elevate AppBar on scroll
-function ElevationScroll(props) {
-  const { children } = props
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 0,
-  })
-  return children({ elevation: trigger ? 8 : 4 })
-}
+const drawerWidth = 250
 
 export default function Layout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const { user, logout } = useAuth()
   const { darkMode, toggleDarkMode } = useTheme()
   const { t, i18n } = useTranslation()
-  const responsive = useResponsiveGlobal() // ← Use it here!
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(mobileOpen)
-  }
-
-  const appBarGradient = darkMode
-    ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
-    : 'linear-gradient(135deg, #023F6B 0%, #025a8a 100%)'
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       {/* App Bar */}
-      <ElevationScroll>
-        {(props) => (
-          <AppBar
-            position="fixed"
-            elevation={props.elevation}
+      <AppBar
+        position="fixed"
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          background: darkMode
+            ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+            : 'linear-gradient(135deg, #023F6BFF 100%, #023F6BFF 100%)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(255,255,255,0.1)',
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            edge="start"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+
+          <Typography
+            variant="h5"
             sx={{
-              zIndex: (theme) => theme.zIndex.drawer + 1,
-              background: appBarGradient,
-              backdropFilter: 'blur(12px)',
-              borderBottom: '1px solid',
-              borderColor: 'divider',
-              transition: 'all 0.3s ease',
+              flex: 1,
+              fontWeight: 500,
+              letterSpacing: '0.5px',
+              background: 'linear-gradient(90deg, #fff, #e0e7ff)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
             }}
           >
-            <Toolbar>
-              {/* Mobile Menu Button */}
-              <IconButton
-                color="inherit"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: 'none' } }}
-              >
-                <MenuIcon />
-              </IconButton>
+            Rental Admin
+          </Typography>
 
-              {/* Logo / Title */}
-              <Typography
-                variant={responsive.isMobile ? 'h6' : 'h5'}
-                sx={{
-                  flexGrow: 1,
-                  fontWeight: 600,
-                  letterSpacing: '0.5px',
-                  background: 'linear-gradient(90deg, #fff, #e0e7ff)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                Rental Admin
-              </Typography>
+          {/* User Avatar */}
+          <Tooltip title={user?.userName || 'Admin'}>
+            <Avatar
+              sx={{
+                bgcolor: 'rgba(255,255,255,0.2)',
+                color: 'white',
+                mr: 2,
+                width: 38,
+                height: 38,
+                fontWeight: 'bold'
+              }}
+            >
+              {user?.userName?.[0]?.toUpperCase()}
+            </Avatar>
+          </Tooltip>
 
-              {/* Right Side Controls */}
-              <Stack direction="row" spacing={1} alignItems="center">
-                {/* Avatar */}
-                <Tooltip title={user?.userName || 'Admin'}>
-                  <Avatar
-                    sx={{
-                      bgcolor: 'rgba(255,255,255,0.18)',
-                      color: 'white',
-                      width: responsive.isMobile ? 34 : 38,
-                      height: responsive.isMobile ? 34 : 38,
-                      fontWeight: 'bold',
-                      fontSize: responsive.isMobile ? '0.9rem' : '1rem',
-                    }}
-                  >
-                    {user?.userName?.[0]?.toUpperCase() || 'A'}
-                  </Avatar>
-                </Tooltip>
+          {/* Dark Mode Toggle */}
+          <Tooltip title={darkMode ? t('light_mode') : t('dark_mode')}>
+            <IconButton color="inherit" onClick={toggleDarkMode}>
+              {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+            </IconButton>
+          </Tooltip>
 
-                {/* Dark Mode */}
-                <Tooltip title={darkMode ? t('light_mode') : t('dark_mode')}>
-                  <IconButton color="inherit" onClick={toggleDarkMode} size={responsive.isMobile ? 'small' : 'medium'}>
-                    {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
-                  </IconButton>
-                </Tooltip>
+          {/* Language Switch */}
+          <select
+            value={i18n.language}
+            onChange={(e) => i18n.changeLanguage(e.target.value)}
+            style={{
+              margin: '0 12px',
+              padding: '6px 12px',
+              borderRadius: '20px',
+              border: 'none',
+              background: 'rgba(255,255,255,0.2)',
+              color: 'white',
+              fontSize: '14px',
+              outline: 'none',
+              backdropFilter: 'blur(10px)',
+              cursor: 'pointer'
+            }}
+          >
+            <option value="en" style={{ color: '#000' }}>english</option>
+            <option value="km" style={{ color: '#000' }}>khmer</option>
+            <option value="fr" style={{ color: '#000' }}>french</option>
+          </select>
 
-                {/* Language Switch */}
-                <Box
-                  component="select"
-                  value={i18n.language}
-                  onChange={(e) => i18n.changeLanguage(e.target.value)}
-                  sx={{
-                    bgcolor: 'rgba(255,255,255,0.15)',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: 3,
-                    px: 1.5,
-                    py: 0.8,
-                    fontSize: '0.875rem',
-                    outline: 'none',
-                    cursor: 'pointer',
-                    backdropFilter: 'blur(10px)',
-                    '& option': { color: '#000' },
-                  }}
-                >
-                  <option value="en">EN</option>
-                  <option value="km">ខ្មែរ</option>
-                  <option value="fr">FR</option>
-                </Box>
-
-                {/* Logout */}
-                <Tooltip title={t('logout')}>
-                  <IconButton color="inherit" onClick={logout} size={responsive.isMobile ? 'small' : 'medium'}>
-                    <LogoutIcon />
-                  </IconButton>
-                </Tooltip>
-              </Stack>
-            </Toolbar>
-          </AppBar>
-        )}
-      </ElevationScroll>
+          {/* Logout */}
+          <Tooltip title={t('logout')}>
+            <IconButton color="inherit" onClick={logout}>
+              <LogoutIcon />
+            </IconButton>
+          </Tooltip>
+        </Toolbar>
+      </AppBar>
 
       {/* Desktop Sidebar */}
       <Drawer
         variant="permanent"
-        open
         sx={{
           display: { xs: 'none', sm: 'block' },
           width: drawerWidth,
@@ -166,12 +131,13 @@ export default function Layout({ children }) {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            bgcolor: darkMode ? 'rgba(20,20,40,0.97)' : 'background.paper',
+            background: darkMode ? 'rgba(20,20,40,0.95)' : 'rgba(255,255,255,0.95)',
             backdropFilter: 'blur(20px)',
-            borderRight: '1px solid',
-            borderColor: 'divider',
-            boxShadow: '4px 0 30px rgba(0,0,0,0.12)',
-          },
+            borderRight: 'none',
+            boxShadow: '4px 0 30px rgba(0,0,0,0.1)',
+            borderRadius: '0 20px 20px 0',
+            overflow: 'hidden'
+          }
         }}
       >
         <Toolbar />
@@ -182,36 +148,34 @@ export default function Layout({ children }) {
       <Drawer
         variant="temporary"
         open={mobileOpen}
-        onClose={handleDrawerToggle}
+        onClose={() => setMobileOpen(false)}
         ModalProps={{ keepMounted: true }}
         sx={{
           display: { xs: 'block', sm: 'none' },
           '& .MuiDrawer-paper': {
             width: drawerWidth,
-            bgcolor: darkMode ? '#0f0f1e' : '#ffffff',
-            boxShadow: '0 0 40px rgba(0,0,0,0.3)',
-          },
+            background: darkMode ? '#121526' : '#ffffff',
+            boxShadow: '0 0 30px rgba(0,0,0,0.3)'
+          }
         }}
       >
         <Toolbar />
         <Sidebar />
       </Drawer>
 
-      {/* Main Content Area */}
+      {/* Main Content */}
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
           width: { xs: '100%', sm: `calc(100% - ${drawerWidth}px)` },
-          display: 'flex',
-          flexDirection: 'column',
           minHeight: '100vh',
+          p: { xs: 2, sm: 2 },
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
-        <Toolbar /> {/* Spacer for fixed AppBar */}
-        <Box sx={{ flex: 1, p: { xs: 1.5, sm: 1, md: 2 } }}>
-          {children || <Outlet />}
-        </Box>
+        <Toolbar />
+        <Box sx={{ flex: 1 }}>{children || <Outlet />}</Box>
       </Box>
     </Box>
   )

@@ -1,18 +1,15 @@
-// src/layout/Sidebar.jsx
 import { List, ListItemButton, ListItemIcon, ListItemText, Divider, Box, Typography } from '@mui/material'
 import {
-  Dashboard, People, Category, Build, History, Person, Settings
+  Dashboard, People, Category, Build, History, Person, Settings, Logout
 } from '@mui/icons-material'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '../../context/ThemeContext.jsx'
-import useResponsiveGlobal from '../../hooks/useResponsiveGlobal.js' // ← Add this!
 
 export default function Sidebar() {
   const { t } = useTranslation()
   const { darkMode } = useTheme()
   const location = useLocation()
-  const responsive = useResponsiveGlobal() // ← Use it!
 
   const menuItems = [
     { text: t('dashboard'), icon: <Dashboard />, to: '/' },
@@ -26,30 +23,31 @@ export default function Sidebar() {
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* Logo */}
-      <Box sx={{ p: 3, textAlign: 'center' }}>
+      {/* Logo Area */}
+      <Box sx={{ p: 2, textAlign: 'center' }}>
         <Typography
-          variant={responsive.isMobile ? 'h6' : 'h5'}
+          variant="h6"
           sx={{
             fontWeight: 900,
-            background: 'linear-gradient(45deg, #667eea, #764ba2)',
+            background: darkMode
+              ? 'linear-gradient(45deg, #667eea, #764ba2)'
+              : 'linear-gradient(45deg, #667eea, #764ba2)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            letterSpacing: '1px',
+            WebkitTextFillColor: 'transparent'
           }}
         >
-          Rental
+          Admin
         </Typography>
-        <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.8 }}>
+        <Typography variant="caption" color="text.secondary">
           Admin Panel
         </Typography>
       </Box>
 
-      <Divider sx={{ mx: 2, opacity: 0.6 }} />
+      <Divider sx={{ mx: 1, opacity: 0.5 }} />
 
       {/* Menu */}
-      <List sx={{ flexGrow: 1, px: 1, pt: 2 }}>
+      <List sx={{ flexGrow: 1, pt: 1 }}>
         {menuItems.map((item) => {
           const isActive = location.pathname === item.to
           return (
@@ -57,43 +55,39 @@ export default function Sidebar() {
               key={item.text}
               component={Link}
               to={item.to}
-              selected={isActive}
               sx={{
-                borderRadius: 3,
-                mb: 1,
                 mx: 1,
-                py: 1.2,
-                bgcolor: isActive ? 'rgba(102,126,234,0.15)' : 'transparent',
-                color: isActive ? 'primary.main' : 'text.primary',
+                my: 1,
+                borderRadius: 3,
+                background: isActive
+                  ? (darkMode ? 'rgba(102, 126, 234, 0.2)' : 'rgba(102, 126, 234, 0.2)')
+                  : 'transparent',
+                color: isActive ? '#667eea' : 'text.primary',
                 fontWeight: isActive ? 700 : 500,
-                '&.Mui-selected': {
-                  bgcolor: 'primary.main',
-                  color: 'white',
-                  '& .MuiListItemIcon-root': { color: 'white' },
-                  '&:hover': { bgcolor: 'primary.dark' },
-                },
+                boxShadow: isActive ? '0 4px 15px rgba(102, 126, 234, 0.2)' : 'none',
+                transition: 'all 0.3s ease',
                 '&:hover': {
-                  bgcolor: darkMode ? 'rgba(102,126,234,0.12)' : 'rgba(102,126,234,0.08)',
-                },
-                transition: 'all 0.25s ease',
+                  background: darkMode ? 'rgba(102, 126, 234, 0.15)' : 'rgba(102, 126, 234, 0.08)',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
+                }
               }}
             >
-              <ListItemIcon sx={{ minWidth: 46, color: isActive ? 'inherit' : 'text.secondary' }}>
+              <ListItemIcon
+                sx={{
+                  color: isActive ? '#667eea' : 'inherit',
+                  minWidth: 45
+                }}
+              >
                 {item.icon}
               </ListItemIcon>
-              <ListItemText
-                primary={item.text}
-                primaryTypographyProps={{
-                  fontSize: responsive.isMobile ? '0.95rem' : '1rem',
-                  fontWeight: 'inherit',
-                }}
-              />
+              <ListItemText primary={item.text} />
             </ListItemButton>
           )
         })}
       </List>
 
-      <Divider sx={{ mx: 2, opacity: 0.6 }} />
+      <Divider sx={{ mx: 1, opacity: 0.5 }} />
 
       {/* Footer */}
       <Box sx={{ p: 2, textAlign: 'center' }}>
