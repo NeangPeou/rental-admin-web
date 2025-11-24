@@ -36,6 +36,7 @@ export default function App() {
                   <Route path="/logs" element={<SystemLogs />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/settings" element={<Settings />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </Layout>
             </PrivateRoute>
