@@ -90,13 +90,13 @@ export default function Sidebar({ collapsed = false }) {
         })}
       </List>
 
-      {/* <Divider sx={{ mx: 1, opacity: 0.5 }} />
+      <Divider sx={{ mx: 1, opacity: 0.5 }} />
 
       <Box sx={{ p: 2, textAlign: 'center' }}>
         <Typography variant="caption" color="text.secondary">
           © 2025 Rental Admin
         </Typography>
-      </Box> */}
+      </Box>
     </Box>
   )
 }
