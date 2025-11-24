@@ -1,4 +1,3 @@
-// src/services/OwnersService.jsx
 import api from "../api/axios.js";
 
 const OwnersService = {
