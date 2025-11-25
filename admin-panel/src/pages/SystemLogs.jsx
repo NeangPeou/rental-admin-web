@@ -118,7 +118,7 @@ export default function SystemLogs() {
       ),
     },
     {
-      field: "hostName",
+      field: "user_agent",
       headerName: t("host"),
       width: responsive.isMobile ? 120 : 150,
       renderCell: (params) => (
