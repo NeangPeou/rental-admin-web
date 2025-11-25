@@ -64,19 +64,6 @@ export default function SystemLogs() {
 
   const columns = [
     {
-      field: "user_id",
-      headerName: t("user"),
-      width: responsive.isMobile ? 130 : 160,
-      renderCell: (params) => (
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Person sx={{ fontSize: 16, opacity: 0.7, color: "text.secondary" }} />
-          <Typography variant="body3" fontSize={13} noWrap>
-            {params.row.userName}
-          </Typography>
-        </Box>
-      ),
-    },
-    {
       field: "action",
       headerName: t("action"),
       width: responsive.isMobile ? 140 : 190,
