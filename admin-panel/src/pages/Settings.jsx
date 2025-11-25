@@ -33,7 +33,6 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '../context/ThemeContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useNavigate } from 'react-router-dom'
-import { getDeviceName } from '../utils/deviceDetector.js'
 
 export default function Settings() {
   const { t, i18n } = useTranslation()
@@ -224,7 +223,7 @@ export default function Settings() {
 
             <ListItem sx={{ py: 2 }}>
               <ListItemIcon><Devices sx={{ color: '#2196f3' }} /></ListItemIcon>
-              <ListItemText primary="Device" secondary={getDeviceName()} />
+              <ListItemText primary="Device" secondary={deviceInfo} />
             </ListItem>
 
             <Divider />
