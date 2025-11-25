@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
       username,
       password,
       isAdmin: true,
-      device_name: deviceName,
+      device_name: 'web',
       user_agent: navigator.userAgent
     })
 
