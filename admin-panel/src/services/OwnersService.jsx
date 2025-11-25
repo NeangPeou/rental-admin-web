@@ -24,7 +24,7 @@ const OwnersService = {
       inUse: [],
       failed: [],
     };
-a
+    
     await Promise.all(
       ids.map(async (id) => {
         try {
