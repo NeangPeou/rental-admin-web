@@ -34,6 +34,7 @@ export default function OwnersController() {
   // Validation errors per field (like Types.jsx)
   const [formErrors, setFormErrors] = useState({});
   const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const GENDERS = ["Male", "Female"];
 
@@ -170,6 +171,7 @@ export default function OwnersController() {
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
+    setIsSubmitting(true);
     setSubmitError("");
 
     const payload = { id: editId };
@@ -208,9 +210,11 @@ export default function OwnersController() {
       }
       closeDialog();
     } catch (err) {
-      const msg = err.response?.data?.detail?.[0]?.msg || err.response?.data?.detail || t("operation_failed");
+      const msg = err.response?.data?.detail?.[0]?.msg || err.response?.data?.detail ||err.response?.data?.message || t("operation_failed");
       setSubmitError(msg);
       snackbar.error(msg);
+    } finally{
+      setIsSubmitting(false);
     }
   };
   const handleBulkDelete = async () => {
@@ -225,6 +229,7 @@ export default function OwnersController() {
     if (!confirmed) return;
 
     try {
+      setLoading(true);
       const result = await OwnersService.bulkDelete(selectedRowIds);
       setSelectedRowIds([]);
       fetchOwners();
@@ -234,6 +239,8 @@ export default function OwnersController() {
       if (result.failed.length > 0) snackbar.warning(t("owners_in_use_multiple"));
     } catch (err) {
       snackbar.error(t("delete_failed"));
+    } finally{
+      setLoading(false);
     }
   };
 
@@ -262,6 +269,7 @@ export default function OwnersController() {
     setForm,
     formErrors,
     submitError,
+    isSubmitting,
     GENDERS,
 
     openCreate,

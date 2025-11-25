@@ -27,6 +27,7 @@ import {
 import { DataGrid } from '@mui/x-data-grid'
 import TypesController from '../controllers/TypesController'
 import useResponsiveGlobal from '../hooks/useResponsiveGlobal' // ← Add this
+import LoadingButton from '../components/loading/LoadingButton'
 
 export default function Types() {
   const { t } = useTranslation()
@@ -51,6 +52,7 @@ export default function Types() {
     closeDialog,
     handleSubmit,
     handleBulkDelete,
+    isSubmitting,
   } = TypesController()
 
   // Responsive columns: hide code chip on mobile if needed
@@ -373,12 +375,24 @@ export default function Types() {
         </DialogContent>
 
         <DialogActions sx={{ p: 2, pt: 1, gap: 1 }}>
-          <Button onClick={closeDialog} fullWidth={responsive.isMobile} sx={{ borderRadius: 3 }}>
+          <Button 
+            onClick={closeDialog} 
+            fullWidth={responsive.isMobile} 
+            variant="outlined"
+            sx={{ borderRadius: 3 }}
+          >
             {t('cancel')}
           </Button>
-          <Button onClick={handleSubmit} variant="contained" fullWidth={responsive.isMobile} sx={{ borderRadius: 3 }}>
+          <LoadingButton 
+            onClick={handleSubmit} 
+            variant="contained" 
+            fullWidth={responsive.isMobile} 
+            sx={{ borderRadius: 3 }}
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          >
             {editId ? t('update') : t('create')}
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </FormContainer>
     </Paper>

@@ -19,6 +19,7 @@ export default function UtilityTypesController() {
   const [formErrors, setFormErrors] = useState({});
   const [submitError, setSubmitError] = useState("");
   const [selectedRowIds, setSelectedRowIds] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchUtilityTypes = async () => {
     try {
@@ -55,6 +56,7 @@ export default function UtilityTypesController() {
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
+    setIsSubmitting(true);
     setSubmitError("");
 
     try {
@@ -81,6 +83,8 @@ export default function UtilityTypesController() {
           ? t("name_already_exists")
           : t("operation_failed")
       );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -122,6 +126,7 @@ export default function UtilityTypesController() {
     if (!confirmed) return;
 
     try {
+      setLoading(true);
       const result = await UtilityTypesService.bulkDelete(selectedRowIds);
 
       setSelectedRowIds([]);
@@ -139,6 +144,8 @@ export default function UtilityTypesController() {
       }
     } catch (err) {
       snackbar.error(t("delete_failed") || "Delete operation failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -167,5 +174,6 @@ export default function UtilityTypesController() {
     closeDialog,
     handleSubmit,
     handleBulkDelete,
+    isSubmitting,
   };
 }

@@ -19,6 +19,7 @@ export default function TypesController() {
   const [formErrors, setFormErrors] = useState({});
   const [submitError, setSubmitError] = useState("");
   const [selectedRowIds, setSelectedRowIds] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchTypes = async () => {
     try {
@@ -56,6 +57,7 @@ export default function TypesController() {
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
+    setIsSubmitting(true);
     setSubmitError("");
 
     try {
@@ -85,6 +87,8 @@ export default function TypesController() {
           ? t("code_already_exists")
           : t("operation_failed")
       );
+    } finally{
+      setIsSubmitting(false);
     }
   };
 
@@ -126,6 +130,7 @@ export default function TypesController() {
     if (!confirmed) return;
 
     try {
+      setLoading(true);
       const result = await TypeService.bulkDelete(selectedRowIds);
 
       // Refresh UI
@@ -160,6 +165,8 @@ export default function TypesController() {
     } catch (err) {
       console.error(err);
       snackbar.error(t("delete_failed"));
+    } finally{
+      setLoading(false);
     }
   };
 
@@ -192,5 +199,6 @@ export default function TypesController() {
     closeDialog,
     handleSubmit,
     handleBulkDelete,
+    isSubmitting,
   };
 }

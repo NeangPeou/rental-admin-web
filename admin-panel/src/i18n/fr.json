@@ -151,5 +151,9 @@
   "password_min_4": "Le mot de passe doit comporter au moins 4 caractères",
   "phone_required": "Le numéro de téléphone est requis",
   "phone_only_number" : "Phone number can only contain digits",
-  "phone_min_8": "Le numéro de téléphone doit comporter au moins 8 chiffres"
+  "phone_min_8": "Le numéro de téléphone doit comporter au moins 8 chiffres",
+  "confirm_logout": "Confirmer la déconnexion",
+  "logout_confirmation_message": "Vous êtes sur le point de mettre fin à votre session actuelle",
+  "sure_want_to_logout": "Êtes-vous sûr de vouloir vous déconnecter du panneau d'administration ?",
+  "logging_out": "Déconnexion..."
 }

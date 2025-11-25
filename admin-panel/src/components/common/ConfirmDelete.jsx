@@ -21,8 +21,6 @@ export const ConfirmDelete = () => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
-  const theme = useTheme();
-  const snackbar = useSnackbar();
 
   const handleConfirm = () => {
     setOpen(false);

@@ -148,5 +148,9 @@
   "password_min_4": "Password must be at least 4 characters",
   "phone_required": "Phone number is required",
   "phone_only_number" : "Phone number can only contain digits",
-  "phone_min_8": "Phone number must be at least 8 digits"
+  "phone_min_8": "Phone number must be at least 8 digits",
+  "confirm_logout": "Confirm Logout",
+  "logout_confirmation_message": "You are about to end your current session",
+  "sure_want_to_logout": "Are you sure you want to log out of the admin panel?",
+  "logging_out": "Logging out..."
 }

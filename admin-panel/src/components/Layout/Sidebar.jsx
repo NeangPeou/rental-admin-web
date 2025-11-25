@@ -14,11 +14,9 @@ import {
 } from '@mui/icons-material'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useTheme } from '../../context/ThemeContext.jsx'
 
 export default function Sidebar({ collapsed = false }) {
   const { t } = useTranslation()
-  const { darkMode } = useTheme()
   const location = useLocation()
 
   const menuItems = [
@@ -61,7 +59,7 @@ export default function Sidebar({ collapsed = false }) {
               to={item.to}
               sx={{
                 mx: 1,
-                my: 0.8,
+                my: 0.5,
                 borderRadius: 3,
                 justifyContent: collapsed ? 'center' : 'flex-start',
                 px: collapsed ? 0 : 2,
@@ -73,7 +71,7 @@ export default function Sidebar({ collapsed = false }) {
                 '&:hover': { background: 'rgba(102, 126, 234, 0.15)', transform: 'translateY(-2px)' },
               }}
             >
-              <ListItemIcon sx={{ color: isActive ? '#667eea' : 'inherit', minWidth: collapsed ? 'auto' : 45, mr: collapsed ? 0 : 2 }}>
+              <ListItemIcon sx={{ color: isActive ? '#667eea' : 'inherit', minWidth: collapsed ? 'auto' : 30, mr: collapsed ? 0 : 2 }}>
                 {item.icon}
               </ListItemIcon>
               {!collapsed && <ListItemText primary={item.text} />}

@@ -22,6 +22,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import useResponsiveGlobal from "../hooks/useResponsiveGlobal";
+import LoadingButton from "../components/loading/LoadingButton.jsx";
 
 export default function Login() {
   const [form, setForm] = useState({ username: "", password: "" });
@@ -33,6 +34,7 @@ export default function Login() {
     type: "error",
   });
   const [shake, setShake] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -67,6 +69,7 @@ export default function Login() {
       setTimeout(() => setShake(false), 500);
       return;
     }
+    setIsSubmitting(true);
 
     try {
       await login(form.username.trim(), form.password);
@@ -92,6 +95,8 @@ export default function Login() {
       } else {
         showToast(t("login_failed_try_again"));
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -274,21 +279,29 @@ export default function Login() {
                       }}
                     />
 
-                    <Button
+                    <LoadingButton
                       type="submit"
                       fullWidth
                       variant="contained"
-                      size="small"
+                      size="large"
+                      loading={isSubmitting}
+                      disabled={isSubmitting}
                       sx={{
-                        fontSize: "1rem",
+                        fontSize: "1.1rem",
                         fontWeight: 700,
+                        py: 1.8,
                         borderRadius: 3,
                         textTransform: "none",
-                        background: "linear-gradient(135deg, #023F6B 0%, #023F6B 100%))",
+                        background: "linear-gradient(135deg, #023F6B 0%, #023F6B 100%)",
+                        boxShadow: "0 8px 25px rgba(2, 63, 107, 0.4)",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                          boxShadow: "0 12px 30px rgba(2, 63, 107, 0.5)",
+                        },
                       }}
                     >
-                      {t("login")}
-                    </Button>
+                      {isSubmitting ? t("logging_in") : t("login")}
+                    </LoadingButton>
                   </Stack>
                 </Box>
               </Box>

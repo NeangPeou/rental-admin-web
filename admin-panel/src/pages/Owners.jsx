@@ -31,6 +31,7 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import OwnersController from "../controllers/OwnersController";
 import useResponsiveGlobal from "../hooks/useResponsiveGlobal";
+import LoadingButton from "../components/loading/LoadingButton";
 
 export default function Owners() {
   const { t } = useTranslation();
@@ -56,6 +57,7 @@ export default function Owners() {
     closeDialog,
     handleSubmit,
     handleBulkDelete,
+    isSubmitting,
   } = OwnersController();
 
   const selectedCount = selectedRowIds.length;
@@ -365,12 +367,23 @@ export default function Owners() {
         </DialogContent>
         <Divider sx={{ mx: 1, opacity: 0.8 }} />
         <DialogActions sx={{ p: 2, gap: 1, pt: 1 }}>
-          <Button onClick={closeDialog} fullWidth={responsive.isMobile} sx={{ borderRadius: 3 }}>
+          <LoadingButton 
+            onClick={closeDialog} 
+            fullWidth={responsive.isMobile} 
+            variant="outlined"
+          >
             {t("cancel")}
-          </Button>
-          <Button onClick={handleSubmit} variant="contained" fullWidth={responsive.isMobile} sx={{ borderRadius: 3 }}>
+          </LoadingButton>
+          <LoadingButton 
+            onClick={handleSubmit} 
+            variant="contained" 
+            loading={isSubmitting}
+            disabled={isSubmitting}
+            fullWidth={responsive.isMobile} 
+            sx={{ borderRadius: 3 }}
+          >
             {editId ? t("update") : t("create")}
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </FormContainer>
     </Paper>
