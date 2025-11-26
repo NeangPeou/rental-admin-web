@@ -155,5 +155,22 @@
   "confirm_logout": "Confirmer la déconnexion",
   "logout_confirmation_message": "Vous êtes sur le point de mettre fin à votre session actuelle",
   "sure_want_to_logout": "Êtes-vous sûr de vouloir vous déconnecter du panneau d'administration ?",
-  "logging_out": "Déconnexion..."
+  "logging_out": "Déconnexion...",
+  "change_password": "Changer le mot de passe",
+  "secure_your_account_with_new_password": "Sécurisez votre compte avec un nouveau mot de passe",
+  "current_password": "Mot de passe actuel",
+  "current_password_required": "Le mot de passe actuel est requis",
+  "current_password_incorrect": "Le mot de passe actuel est incorrect",
+  "new_password": "Nouveau mot de passe",
+  "new_password_required": "Le nouveau mot de passe est requis",
+  "password_min_3_chars": "Minimum 3 caractères",
+  "new_password_must_be_different": "Le nouveau mot de passe doit être différent de l'actuel",
+  "confirm_new_password": "Confirmer le nouveau mot de passe",
+  "passwords_do_not_match": "Les mots de passe ne correspondent pas",
+  "passwords_must_match": "Les mots de passe doivent correspondre",
+  "update_password": "Mettre à jour le mot de passe",
+  "you_will_be_logged_out_after_change": "Vous serez automatiquement déconnecté après le changement",
+  "password_changed_successfully": "Mot de passe modifié avec succès !",
+  "logged_out_for_security": "Pour des raisons de sécurité, vous avez été déconnecté.",
+  "redirecting_to_login": "Redirection vers la page de connexion..."
 }

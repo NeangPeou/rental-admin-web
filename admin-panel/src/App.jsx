@@ -10,6 +10,7 @@ import Layout from './components/Layout/index.jsx'
 import Profile from './pages/Profile.jsx'
 import Settings from './pages/Settings.jsx'
 import { ConfirmDelete } from './components/common/ConfirmDelete.jsx'
+import ChangePassword from './pages/ChangePassword.jsx'
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
@@ -35,6 +36,7 @@ export default function App() {
                   <Route path="/utilities" element={<UtilityTypes />} />
                   <Route path="/logs" element={<SystemLogs />} />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/change-password" element={<ChangePassword />} />
                   <Route path="/settings" element={<Settings />} />
                 </Routes>
               </Layout>

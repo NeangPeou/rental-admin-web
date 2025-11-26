@@ -152,5 +152,22 @@
   "confirm_logout": "Confirm Logout",
   "logout_confirmation_message": "You are about to end your current session",
   "sure_want_to_logout": "Are you sure you want to log out of the admin panel?",
-  "logging_out": "Logging out..."
+  "logging_out": "Logging out...",
+  "change_password": "Change Password",
+  "secure_your_account_with_new_password": "Secure your account with a new password",
+  "current_password": "Current Password",
+  "new_password": "New Password",
+  "confirm_new_password": "Confirm New Password",
+  "passwords_must_match": "Passwords do not match",
+  "update_password": "Update Password",
+  "you_will_be_logged_out_after_change": "You will be logged out automatically after changing your password",
+  "password_changed_successfully": "Password Changed Successfully!",
+  "logged_out_for_security": "For security, you have been logged out.",
+  "redirecting_to_login": "Redirecting to login...",
+  "current_password_required": "Current password is required",
+  "new_password_required": "New password is required",
+  "password_min_3_chars": "Password must be at least 3 characters",
+  "new_password_must_be_different": "New password must be different from current password",
+  "passwords_do_not_match": "Passwords do not match",
+  "current_password_incorrect": "Current password is incorrect"
 }

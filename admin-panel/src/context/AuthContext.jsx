@@ -9,20 +9,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // const login = async (username, password) => {
-  //   const res = await api.post('/api/login', {
-  //     username,
-  //     password,
-  //     isAdmin: true,
-  //     device_name: 'web',
-  //     user_agent: navigator.userAgent
-  //   })
-
-  //   localStorage.setItem('accessToken', res.data.accessToken)
-  //   localStorage.setItem('refreshToken', res.data.refreshToken)
-  //   setUser(res.data)
-  //   return res.data
-  // }
   const login = async (username, password) => {
     setLoading(true);
 

@@ -13,14 +13,11 @@ import {
   Avatar,
   Switch,
   Chip,
-  Stack,
   alpha
 } from '@mui/material'
 import {
   Person,
   Lock,
-  Notifications,
-  Palette,
   Language,
   DarkMode,
   Devices,
@@ -142,7 +139,7 @@ export default function Settings() {
               <ChevronRight color="action" />
             </ListItemButton>
 
-            <ListItemButton sx={{ py: 2.5 }}>
+            <ListItemButton onClick={() => navigate('/change-password')} sx={{ py: 2.5 }}>
               <ListItemIcon><Lock sx={{ color: '#f093fb' }} /></ListItemIcon>
               <ListItemText primary="Change Password" secondary="Update your login credentials" />
               <ChevronRight color="action" />

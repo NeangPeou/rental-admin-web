@@ -155,5 +155,22 @@
   "confirm_logout": "បញ្ជាក់ការចាកចេញ",
   "logout_confirmation_message": "អ្នកកំពុងតែចង់បញ្ចប់សម័យការងារបច្ចុប្បន្នរបស់អ្នក",
   "sure_want_to_logout": "តើអ្នកប្រាកដជាចង់ចាកចេញពីផ្ទាំងគ្រប់គ្រងមែនទេ?",
-  "logging_out": "កំពុងចាកចេញ..."
+  "logging_out": "កំពុងចាកចេញ...",
+  "change_password": "ប្តូរលេខសម្ងាត់",
+  "secure_your_account_with_new_password": "រក្សាសុវត្ថិភាពគណនីរបស់អ្នកជាមួយលេខសម្ងាត់ថ្មី",
+  "current_password": "លេខសម្ងាត់បច្ចុប្បន្ន",
+  "current_password_required": "ត្រូវការលេខសម្ងាត់បច្ចុប្បន្ន",
+  "new_password": "លេខសម្ងាត់ថ្មី",
+  "password_min_3_chars": "យ៉ាងហោចណាស់ ៣ តួអក្សរ",
+  "confirm_new_password": "បញ្ជាក់លេខសម្ងាត់ថ្មី",
+  "passwords_must_match": "លេខសម្ងាត់មិនត្រូវគ្នា",
+  "update_password": "កែប្រែលេខសម្ងាត់",
+  "you_will_be_logged_out_after_change": "អ្នកនឹងត្រូវចាកចេញដោយស្វ័យប្រវត្តិបន្ទាប់ពីប្តូរលេខសម្ងាត់",
+  "password_changed_successfully": "បានប្តូរលេខសម្ងាត់ដោយជោគជ័យ!",
+  "logged_out_for_security": "ដើម្បីសុវត្ថិភាព អ្នកត្រូវបានចាកចេញ",
+  "redirecting_to_login": "កំពុងបញ្ជូនទៅទំព័រចូល...",
+  "new_password_required": "ត្រូវការលេខសម្ងាត់ថ្មី",
+  "new_password_must_be_different": "លេខសម្ងាត់ថ្មីត្រូវតែខុសពីបច្ចុប្បន្ន",
+  "passwords_do_not_match": "លេខសម្ងាត់មិនត្រូវគ្នា",
+  "current_password_incorrect": "លេខសម្ងាត់បច្ចុប្បន្នមិនត្រឹមត្រូវ"
 }
