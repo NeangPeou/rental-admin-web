@@ -1,57 +1,52 @@
+// utils/deviceDetector.js
 const getFallbackDeviceName = () => {
-  const ua = navigator.userAgent;
-  let device = 'Web Browser';
+  const ua = navigator.userAgent.toLowerCase();
 
-  if (/Windows/i.test(ua)) return 'Windows PC';
-  if (/Macintosh|MacIntel/i.test(ua)) return 'Mac';
-  if (/iPhone/i.test(ua)) return 'iPhone';
-  if (/iPad/i.test(ua)) return 'iPad';
-  if (/Android/i.test(ua)) {
-    const match = ua.match(/Android.*?;\s([^;]+?)\sBuild/);
-    return match ? match[1].trim() : 'Android Device';
+  if (/windows/i.test(ua)) return "Windows PC";
+  if (/macintosh|mac os x/i.test(ua)) return "Mac";
+  if (/iphone/i.test(ua)) return "iPhone";
+  if (/ipad/i.test(ua)) return "iPad";
+  if (/android/i.test(ua)) {
+    // Try to extract real model from UA (works on many Android devices)
+    const androidModel = ua.match(/android.*?;\s([^);]+?)\sbuild/i);
+    if (androidModel && androidModel[1]) {
+      const model = androidModel[1].trim();
+      // Clean up common junk
+      if (model.includes("chrome") || model.includes("linux") || model === "mobile") {
+        return "Android Device";
+      }
+      return model.includes("samsung") ? model : `${model} (Android)`;
+    }
+    return "Android Device";
   }
-  if (/Linux/i.test(ua) && !/Android/i.test(ua)) return 'Linux PC';
-  if (/CrOS/i.test(ua)) return 'Chromebook';
+  if (/linux/i.test(ua) && !/android/i.test(ua)) return "Linux PC";
+  if (/cros/i.test(ua)) return "Chromebook";
 
-  return device;
+  return "Web Browser";
 };
 
 export const getDeviceName = async () => {
-  // Modern browsers (Chrome 90+, Edge, Opera, Samsung Internet)
+  // Try modern API first
   if (navigator.userAgentData) {
     try {
-      const ua = await navigator.userAgentData.getHighEntropyValues([
+      const data = await navigator.userAgentData.getHighEntropyValues([
         "platform",
-        "platformVersion",
         "model",
-        "brands",
-        "mobile"
+        "mobile",
       ]);
 
-      const { model, platform, mobile } = ua;
-
-      // Mobile devices often expose real model
-      if (mobile && model && model !== "") {
-        return `${model} (${platform})`;
+      // Only trust model if it's not empty AND we're on mobile
+      if (data.mobile && data.model && data.model.trim() !== "") {
+        return `${data.model} (${data.platform})`;
       }
 
-      // Desktop or fallback
-      const osMap = {
-        "Windows": "Windows PC",
-        "macOS": "Mac",
-        "Linux": "Linux PC",
-        "Chrome OS": "Chromebook"
-      };
-
-      const niceOS = osMap[platform] || platform || "PC";
-      return mobile ? `${model || "Mobile Device"} (${platform})` : `${niceOS} Desktop`;
-
+      // If model is empty (most Android), fall through
     } catch (err) {
-      console.warn("High Entropy UA failed, using fallback", err);
-      // Fall through to fallback
+      console.warn("User-Agent Client Hints failed:", err);
+      // Continue to fallback
     }
   }
 
-  // Old browsers or failed promise → use UA string parsing
+  // Ultimate fallback — works everywhere, including Android
   return getFallbackDeviceName();
 };
