@@ -14,7 +14,7 @@ import ChangePassword from './pages/ChangePassword.jsx'
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
-  if (loading) return <div></div>
+  if (loading) return null
   return user ? children : <Navigate to="/login" />
 }
 
