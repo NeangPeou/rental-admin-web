@@ -1,46 +1,55 @@
+// src/pages/Settings.jsx
 import { useState, useEffect } from 'react'
 import {
   Box,
   Paper,
   Typography,
+  Tabs,
+  Tab,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  ListItemSecondaryAction,
   Divider,
   Avatar,
   Switch,
   Chip,
-  alpha
+  alpha,
+  Stack
 } from '@mui/material'
 import {
   Person,
   Lock,
-  Language,
   DarkMode,
+  Language,
   Devices,
   AccessTime,
   Public,
   Logout,
-  ChevronRight
+  AccountCircle,
+  Palette,
+  Info
 } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '../context/ThemeContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useNavigate } from 'react-router-dom'
+import useResponsiveGlobal from '../hooks/useResponsiveGlobal' // ← Added
 
 export default function Settings() {
   const { t, i18n } = useTranslation()
   const { darkMode, toggleDarkMode } = useTheme()
   const { user, logout } = useAuth()
   const navigate = useNavigate()
+  const responsive = useResponsiveGlobal() // ← Global responsive
+
+  const [tabValue, setTabValue] = useState(0)
 
   const [currentTime, setCurrentTime] = useState('')
   const [deviceInfo, setDeviceInfo] = useState('Detecting...')
 
-  // Live Clock (Phnom Penh Time)
+  // Live Clock (Phnom Penh)
   useEffect(() => {
     const updateClock = () => {
       const now = new Date().toLocaleString('en-US', {
@@ -52,7 +61,6 @@ export default function Settings() {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        timeZoneName: 'short'
       })
       setCurrentTime(now)
     }
@@ -88,214 +96,189 @@ export default function Settings() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: { xs: 2, sm: 4 } }}>
-      <Box sx={{ maxWidth: 800, mx: 'auto', px: { xs: 2, sm: 3 } }}>
-        
-        {/* Header */}
+    <Box sx={{ bgcolor: 'background.default'}}>
+      <Box sx={{ mx: 'auto'}}>
+
+        {/* Gradient Title */}
         <Typography
-          variant="h4"
-          fontWeight={800}
+          variant={responsive.isMobile ? 'h6' : 'h5'}
+          fontWeight={600}
           gutterBottom
           sx={{
-            background: darkMode
-              ? 'linear-gradient(90deg, #667eea, #764ba2)'
-              : 'linear-gradient(90deg, #667eea, #764ba2)',
+            background: 'linear-gradient(90deg, #667eea, #764ba2)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            mb: 4
+            textAlign: { xs: 'center', sm: 'left' },
           }}
         >
           {t('settings')}
         </Typography>
 
-        {/* Main Settings Card */}
+        {/* Tabs + Content Card */}
         <Paper
-          elevation={darkMode ? 8 : 3}
+          elevation={darkMode ? 10 : 6}
           sx={{
             borderRadius: 4,
             overflow: 'hidden',
-            background: darkMode
-              ? 'rgba(20, 20, 40, 0.8)'
-              : 'rgba(255, 255, 255, 0.9)',
+            background: darkMode ? 'rgba(20, 20, 40, 0.85)' : 'rgba(255, 255, 255, 0.95)',
             backdropFilter: 'blur(20px)',
             border: '1px solid',
-            borderColor: 'divider'
+            borderColor: 'divider',
           }}
         >
+          {/* Responsive Tabs */}
+          <Tabs
+            value={tabValue}
+            onChange={(e, newValue) => setTabValue(newValue)}
+            variant={responsive.isMobile ? 'fullWidth' : 'standard'}
+            centered={responsive.isMobile}
+            sx={{
+              borderBottom: 1,
+              borderColor: 'divider',
+              '& .MuiTab-root': {
+                textTransform: 'none',
+                fontWeight: 600,
+              }
+            }}
+          >
+            <Tab icon={<AccountCircle />} label={t('account')} />
+            <Tab icon={<Palette />} label={t('appearance')} />
+            <Tab icon={<Info />} label={t('session_info')} />
+          </Tabs>
 
-          {/* Account Section */}
-          <List disablePadding>
-            <ListItem sx={{ bgcolor: alpha('#667eea', 0.1), py: 2 }}>
-              <ListItemText
-                primary={<Typography fontWeight={700} color="primary">Account</Typography>}
-                secondary="Manage your profile and security"
-              />
-            </ListItem>
+          {/* Tab Panels */}
+          <Box>
+            {/* === Account Tab === */}
+            {tabValue === 0 && (
+              <List disablePadding>
+                <ListItemButton onClick={() => navigate('/profile')}>
+                  <ListItemIcon><Person sx={{ color: '#667eea' }} /></ListItemIcon>
+                  <ListItemText primary={t('profile')} secondary={t('edit_personal_info')} />
+                </ListItemButton>
+                <Divider />
+                <ListItemButton onClick={() => navigate('/change-password')}>
+                  <ListItemIcon><Lock sx={{ color: '#f093fb' }} /></ListItemIcon>
+                  <ListItemText primary={t('change_password')} secondary={t('update_login_credentials')} />
+                </ListItemButton>
+              </List>
+            )}
 
-            <ListItemButton onClick={() => navigate('/profile')} sx={{ py: 2.5 }}>
-              <ListItemIcon><Person sx={{ color: '#667eea' }} /></ListItemIcon>
-              <ListItemText primary={t('profile')} secondary="Edit personal information" />
-              <ChevronRight color="action" />
-            </ListItemButton>
+            {/* === Appearance Tab === */}
+            {tabValue === 1 && (
+              <List disablePadding>
+                <ListItem>
+                  <ListItemIcon><DarkMode sx={{ color: '#ffd93d' }} /></ListItemIcon>
+                  <ListItemText
+                    primary={t('dark_mode')}
+                    secondary={darkMode ? t('currently_dark') : t('currently_light')}
+                  />
+                  <Switch checked={darkMode} onChange={toggleDarkMode} color="primary" />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                  <ListItemIcon><Language sx={{ color: '#4facfe' }} /></ListItemIcon>
+                  <ListItemText primary={t('language')} secondary={t('select_preferred_language')} />
+                  <select
+                    value={i18n.language}
+                    onChange={handleLanguageChange}
+                    style={{
+                      padding: '8px 16px',
+                      borderRadius: '12px',
+                      border: '1px solid',
+                      borderColor: darkMode ? '#444' : '#ddd',
+                      background: darkMode ? '#333' : '#fff',
+                      color: 'inherit'
+                    }}
+                  >
+                    <option value="en">🇺🇸</option>
+                    <option value="km">🇰🇭</option>
+                    <option value="fr">🇫🇷</option>
+                  </select>
+                </ListItem>
+              </List>
+            )}
 
-            <ListItemButton onClick={() => navigate('/change-password')} sx={{ py: 2.5 }}>
-              <ListItemIcon><Lock sx={{ color: '#f093fb' }} /></ListItemIcon>
-              <ListItemText primary="Change Password" secondary="Update your login credentials" />
-              <ChevronRight color="action" />
-            </ListItemButton>
+            {/* === Session Info Tab === */}
+            {tabValue === 2 && (
+              <List disablePadding>
+                <ListItem>
+                  <ListItemIcon><Public sx={{ color: '#43a047' }} /></ListItemIcon>
+                  <ListItemText primary={t('location')} secondary="Phnom Penh, Cambodia" />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                  <ListItemIcon><AccessTime sx={{ color: '#ff9800' }} /></ListItemIcon>
+                  <ListItemText primary={t('current_time')} secondary={currentTime} />
+                </ListItem>
+                <Divider />
+                <ListItem>
+                  <ListItemIcon><Devices sx={{ color: '#2196f3' }} /></ListItemIcon>
+                  <ListItemText primary={t('device')} secondary={deviceInfo} />
+                </ListItem>
+              </List>
+            )}
+          </Box>
 
-            <Divider />
-          </List>
-
-          {/* Appearance Section */}
-          <List disablePadding>
-            <ListItem sx={{ bgcolor: alpha('#764ba2', 0.1), py: 2 }}>
-              <ListItemText
-                primary={<Typography fontWeight={700} color="secondary">Appearance</Typography>}
-                secondary="Customize how the app looks"
-              />
-            </ListItem>
-
-            <ListItem sx={{ py: 2.5 }}>
-              <ListItemIcon><DarkMode sx={{ color: '#ffd93d' }} /></ListItemIcon>
-              <ListItemText
-                primary={t('dark_mode')}
-                secondary={darkMode ? "Currently in dark mode" : "Currently in light mode"}
-              />
-              <ListItemSecondaryAction>
-                <Switch checked={darkMode} onChange={toggleDarkMode} color="primary" />
-              </ListItemSecondaryAction>
-            </ListItem>
-
-            <ListItem sx={{ py: 2.5 }}>
-              <ListItemIcon><Language sx={{ color: '#4facfe' }} /></ListItemIcon>
-              <ListItemText
-                primary={t('language')}
-                secondary="Language"
-              />
-              <ListItemSecondaryAction>
-                <select
-                  value={i18n.language}
-                  onChange={handleLanguageChange}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: '20px',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    background: darkMode ? '#1a1a2e' : '#f5f5f5',
-                    color: 'inherit',
-                    fontSize: '14px',
-                    outline: 'none'
-                  }}
-                >
-                  <option value="en">english</option>
-                  <option value="km">khmer</option>
-                  <option value="fr">french</option>
-                </select>
-              </ListItemSecondaryAction>
-            </ListItem>
-
-            <Divider />
-          </List>
-
-          {/* Session Info */}
-          <List disablePadding>
-            <ListItem sx={{ bgcolor: alpha('#43a047', 0.1), py: 2 }}>
-              <ListItemText
-                primary={<Typography fontWeight={700} color="success.main">Session Information</Typography>}
-                secondary="Your current login details"
-              />
-            </ListItem>
-
-            <ListItem sx={{ py: 2 }}>
-              <ListItemIcon><Public sx={{ color: '#43a047' }} /></ListItemIcon>
-              <ListItemText primary="Location" secondary="Phnom Penh, Cambodia" />
-            </ListItem>
-
-            <ListItem sx={{ py: 2 }}>
-              <ListItemIcon><AccessTime sx={{ color: '#ff9800' }} /></ListItemIcon>
-              <ListItemText primary="Current Time" secondary={currentTime} />
-            </ListItem>
-
-            <ListItem sx={{ py: 2 }}>
-              <ListItemIcon><Devices sx={{ color: '#2196f3' }} /></ListItemIcon>
-              <ListItemText primary="Device" secondary={deviceInfo} />
-            </ListItem>
-
-            <Divider />
-          </List>
-
-          {/* Logout */}
-          <List disablePadding>
-            <ListItemButton
-              onClick={logout}
-              sx={{
-                py: 3,
-                bgcolor: alpha('#f44336', 0.1),
-                '&:hover': { bgcolor: alpha('#f44336', 0.2) }
-              }}
-            >
-              <ListItemIcon>
-                <Logout sx={{ color: '#f44336' }} />
-              </ListItemIcon>
+          {/* Logout Button - Always Visible */}
+          <Box sx={{ borderTop: 1, borderColor: 'divider', bgcolor: alpha('#f44336', 0.08) }}>
+            <ListItemButton onClick={logout} sx={{ borderRadius: 3, '&:hover': { bgcolor: alpha('#f44336', 0.16) } }}>
+              <ListItemIcon><Logout sx={{ color: '#f44336' }} /></ListItemIcon>
               <ListItemText
                 primary={<Typography fontWeight={700} color="#f44336">{t('logout')}</Typography>}
-                secondary="Sign out from this device"
+                secondary={t('sign_out_from_device')}
               />
             </ListItemButton>
-          </List>
+          </Box>
         </Paper>
 
-        {/* User Profile Card at Bottom */}
+        {/* User Card - Bottom */}
         <Paper
-          elevation={darkMode ? 10 : 4}
+          elevation={darkMode ? 12 : 8}
           sx={{
-            mt: 6,
-            p: 4,
+            mt: 2,
+            p: { xs: 3, sm: 4 },
             borderRadius: 4,
             textAlign: 'center',
             background: darkMode
               ? 'linear-gradient(135deg, #16213e, #1a1a2e)'
               : 'linear-gradient(135deg, #667eea, #764ba2)',
-            color: 'white'
+            color: 'white',
+            boxShadow: darkMode ? '0 8px 32px rgba(0,0,0,0.4)' : '0 8px 32px rgba(102, 126, 234, 0.3)',
           }}
         >
           <Avatar
             sx={{
-              width: 90,
-              height: 90,
+              width: responsive.isMobile ? 80 : 100,
+              height: responsive.isMobile ? 80 : 100,
               mx: 'auto',
               mb: 2,
-              fontSize: 40,
+              fontSize: responsive.isMobile ? 36 : 48,
               fontWeight: 'bold',
-              bgcolor: 'rgba(255,255,255,0.2)',
-              backdropFilter: 'blur(10px)'
+              bgcolor: 'rgba(255,255,255,0.25)',
+              backdropFilter: 'blur(10px)',
             }}
           >
             {user?.userName?.[0]?.toUpperCase() || 'A'}
           </Avatar>
-          <Typography variant="h5" fontWeight={700}>
+          <Typography variant={responsive.isMobile ? 'h6' : 'h5'} fontWeight={800}>
             {user?.userName || 'Admin User'}
           </Typography>
-          <Typography variant="body2" sx={{ opacity: 0.9, mt: 1 }}>
+          <Typography variant="body1" sx={{ opacity: 0.9, mt: 1 }}>
             {user?.phoneNumber || 'admin@rental.com'}
           </Typography>
           <Chip
-            label="Administrator"
+            label={t('administrator')}
             size="small"
             sx={{
               mt: 2,
               bgcolor: 'rgba(255,255,255,0.3)',
               color: 'white',
-              fontWeight: 600
+              fontWeight: 600,
+              backdropFilter: 'blur(10px)'
             }}
           />
         </Paper>
-
-        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textAlign: 'center', mt: 4 }}>
-          © 2025 Rental Admin Panel • All rights reserved
-        </Typography>
       </Box>
     </Box>
   )

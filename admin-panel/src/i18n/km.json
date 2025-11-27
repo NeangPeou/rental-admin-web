@@ -172,5 +172,17 @@
   "new_password_required": "ត្រូវការលេខសម្ងាត់ថ្មី",
   "new_password_must_be_different": "លេខសម្ងាត់ថ្មីត្រូវតែខុសពីបច្ចុប្បន្ន",
   "passwords_do_not_match": "លេខសម្ងាត់មិនត្រូវគ្នា",
-  "current_password_incorrect": "លេខសម្ងាត់បច្ចុប្បន្នមិនត្រឹមត្រូវ"
+  "current_password_incorrect": "លេខសម្ងាត់បច្ចុប្បន្នមិនត្រឹមត្រូវ",
+  "account": "គណនី",
+  "session_info": "ព័ត៌មានសម័យ",
+  "edit_personal_info": "កែប្រែព័ត៌មានផ្ទាល់ខ្លួន",
+  "update_login_credentials": "ធ្វើបច្ចុប្បន្នភាពលេខសម្ងាត់ចូល",
+  "currently_dark": "បច្ចុប្បន្នកំពុងប្រើរបៀបងងឹត",
+  "currently_light": "បច្ចុប្បន្នកំពុងប្រើរបៀបភ្លឺ",
+  "select_preferred_language": "ជ្រើសរើសភាសាដែលអ្នកចូលចិត្ត",
+  "location": "ទីតាំង",
+  "current_time": "ម៉ោងបច្ចុប្បន្ន",
+  "device": "ឧបករណ៍",
+  "sign_out_from_device": "ចាកចេញពីឧបករណ៍នេះ",
+  "administrator": "អ្នកគ្រប់គ្រង"
 }

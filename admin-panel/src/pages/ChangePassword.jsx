@@ -18,9 +18,11 @@ import {
   Logout,
 } from "@mui/icons-material";
 import ChangePasswordController from "../controllers/ChangePasswordController";
+import useResponsiveGlobal from "../hooks/useResponsiveGlobal";   // ← Added
 
 export default function ChangePassword() {
-  const { t } = useTranslation(); // ← Add this
+  const { t } = useTranslation();
+  const responsive = useResponsiveGlobal();   // ← Now available everywhere
 
   const {
     form,
@@ -41,6 +43,8 @@ export default function ChangePassword() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        minHeight: "85vh",
+        p: { xs: 1, sm: 5  },             
       }}
     >
       <Box sx={{ maxWidth: 480, width: "100%" }}>
@@ -59,13 +63,15 @@ export default function ChangePassword() {
           {success ? (
             <Box
               sx={{
-                p: 4,
+                p: { xs: 4, sm: 6 },
                 textAlign: "center",
                 bgcolor: "background.default",
               }}
             >
-              <CheckCircleOutline sx={{ fontSize: 80, mb: 3 }} />
-              <Typography variant="h5" fontWeight={800} gutterBottom>
+              <CheckCircleOutline
+                sx={{ fontSize: responsive.isMobile ? 70 : 80, mb: 3, color: "success.main" }}
+              />
+              <Typography variant={responsive.isMobile ? "h6" : "h5"} fontWeight={800} gutterBottom>
                 {t("password_changed_successfully")}
               </Typography>
               <Typography variant="body1" sx={{ opacity: 0.9, mb: 4 }}>
@@ -78,20 +84,23 @@ export default function ChangePassword() {
                 </Typography>
               </Box>
             </Box>
-          ) : ( 
+          ) : (
             <>
               {/* Header */}
               <Box
                 sx={{
-                  p: 2,
+                  p: { xs: 2.5, sm: 2 },
                   textAlign: "center",
                   position: "relative",
                 }}
               >
-                <IconButton onClick={goBack} sx={{ position: "absolute", left: 12, top: 12}}>
+                <IconButton
+                  onClick={goBack}
+                  sx={{ position: "absolute", left: 12, top: 12 }}
+                >
                   <ArrowBack />
                 </IconButton>
-                <Typography variant="h6" fontWeight={800}>
+                <Typography variant={responsive.isMobile ? "h7" : "h6"} fontWeight={500}>
                   {t("change_password")}
                 </Typography>
                 <Typography variant="body2" sx={{ mt: 1, opacity: 0.9 }}>
@@ -99,7 +108,7 @@ export default function ChangePassword() {
                 </Typography>
               </Box>
 
-              <Box sx={{ p: 4, pt: 0 }}>
+              <Box sx={{ p: { xs: 2.5, sm: 3 }, pt: 0}}>
                 <form onSubmit={handleSubmit}>
                   <TextField
                     fullWidth
@@ -111,8 +120,9 @@ export default function ChangePassword() {
                     error={!!errors.currentPassword}
                     helperText={errors.currentPassword}
                     margin="dense"
+                    size="small"
                     sx={{
-                      "& .MuiInputBase-root": { borderRadius: 3 }
+                      "& .MuiInputBase-root": { borderRadius: 3 },
                     }}
                     InputProps={{
                       endAdornment: (
@@ -134,9 +144,10 @@ export default function ChangePassword() {
                     onChange={handleChange}
                     error={!!errors.newPassword}
                     helperText={errors.newPassword}
-                    margin="normal"
+                    margin="dense"
+                    size="small"
                     sx={{
-                      "& .MuiInputBase-root": { borderRadius: 3 }
+                      "& .MuiInputBase-root": { borderRadius: 3 },
                     }}
                     InputProps={{
                       endAdornment: (
@@ -158,9 +169,10 @@ export default function ChangePassword() {
                     onChange={handleChange}
                     error={!!errors.confirmPassword}
                     helperText={errors.confirmPassword}
-                    margin="normal"
+                    margin="dense"
+                    size="small"
                     sx={{
-                      "& .MuiInputBase-root": { borderRadius: 3 }
+                      "& .MuiInputBase-root": { borderRadius: 3 },
                     }}
                     InputProps={{
                       endAdornment: (
@@ -171,8 +183,6 @@ export default function ChangePassword() {
                         </InputAdornment>
                       ),
                     }}
-                    
-
                   />
 
                   <Button
@@ -183,11 +193,15 @@ export default function ChangePassword() {
                     disabled={loading}
                     sx={{
                       mt: 2,
+                      py: 1,
                       borderRadius: 6,
                       fontWeight: 700,
-                      fontSize: "1.1rem",
+                      fontSize: responsive.isMobile ? "1rem" : "1.1rem",
                       textTransform: "none",
                       background: "linear-gradient(135deg, #023F6B 0%, #023F6B 100%)",
+                      "&:hover": {
+                        background: "linear-gradient(135deg, #012b47 0%, #012b47 100%)",
+                      },
                     }}
                   >
                     {loading ? (
@@ -198,7 +212,12 @@ export default function ChangePassword() {
                   </Button>
                 </form>
 
-                <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 3 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  align="center"
+                  sx={{ mt: 2}}
+                >
                   {t("you_will_be_logged_out_after_change")}
                 </Typography>
               </Box>

@@ -172,5 +172,17 @@
   "you_will_be_logged_out_after_change": "Vous serez automatiquement déconnecté après le changement",
   "password_changed_successfully": "Mot de passe modifié avec succès !",
   "logged_out_for_security": "Pour des raisons de sécurité, vous avez été déconnecté.",
-  "redirecting_to_login": "Redirection vers la page de connexion..."
+  "redirecting_to_login": "Redirection vers la page de connexion...",
+  "account": "Compte",
+  "session_info": "Informations de session",
+  "edit_personal_info": "Modifier les informations personnelles",
+  "update_login_credentials": "Mettre à jour vos identifiants",
+  "currently_dark": "Mode sombre activé",
+  "currently_light": "Mode clair activé",
+  "select_preferred_language": "Choisissez votre langue préférée",
+  "location": "Emplacement",
+  "current_time": "Heure actuelle",
+  "device": "Appareil",
+  "sign_out_from_device": "Se déconnecter de cet appareil",
+  "administrator": "Administrateur"
 }

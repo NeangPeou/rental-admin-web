@@ -169,5 +169,17 @@
   "password_min_3_chars": "Password must be at least 3 characters",
   "new_password_must_be_different": "New password must be different from current password",
   "passwords_do_not_match": "Passwords do not match",
-  "current_password_incorrect": "Current password is incorrect"
+  "current_password_incorrect": "Current password is incorrect",
+  "account": "Account",
+  "session_info": "Session Info",
+  "edit_personal_info": "Edit personal information",
+  "update_login_credentials": "Update your login credentials",
+  "currently_dark": "Currently in dark mode",
+  "currently_light": "Currently in light mode",
+  "select_preferred_language": "Select your preferred language",
+  "location": "Location",
+  "current_time": "Current Time",
+  "device": "Device",
+  "sign_out_from_device": "Sign out from this device",
+  "administrator": "Administrator"
 }
