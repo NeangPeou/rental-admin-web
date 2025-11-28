@@ -181,5 +181,6 @@
   "current_time": "Current Time",
   "device": "Device",
   "sign_out_from_device": "Sign out from this device",
-  "administrator": "Administrator"
+  "administrator": "Administrator",
+  "loading": "Please wait, loading…"
 }

@@ -32,7 +32,7 @@ export default function Layout({ children }) {
   const responsive = useResponsiveGlobal()
   const { isMobile } = responsive
 
-  const { user, logout } = useAuth()
+  const { logout } = useAuth()
   const { darkMode, toggleDarkMode } = useAppTheme()
   const { t, i18n } = useTranslation()
 

@@ -1,9 +1,11 @@
-// src/components/common/LoadingScreen.jsx
 import { Box, CircularProgress, Typography } from '@mui/material'
 import { useTheme as useAppTheme } from '../../context/ThemeContext.jsx'
+import { useTranslation } from 'react-i18next'
 
 export default function LoadingScreen() {
   const { darkMode } = useAppTheme()
+  const { t } = useTranslation()
+
 
   return (
     <Box
@@ -24,23 +26,6 @@ export default function LoadingScreen() {
         transition: 'all 0.5s ease',
       }}
     >
-      <Box
-        sx={{
-          width: 80,
-          height: 80,
-          borderRadius: '50%',
-          background: 'linear-gradient(45deg, #667eea, #764ba2)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          mb: 4,
-          boxShadow: '0 0 40px rgba(102, 126, 234, 0.6)',
-        }}
-      >
-        <Typography variant="h4" color="white" fontWeight={900}>
-          A
-        </Typography>
-      </Box>
       <CircularProgress 
         size={60} 
         thickness={4} 
@@ -57,7 +42,7 @@ export default function LoadingScreen() {
           letterSpacing: 1
         }}
       >
-        Loading Admin Panel...
+        {t('loading')}
       </Typography>
     </Box>
   )

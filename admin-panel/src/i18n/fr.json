@@ -184,5 +184,6 @@
   "current_time": "Heure actuelle",
   "device": "Appareil",
   "sign_out_from_device": "Se déconnecter de cet appareil",
-  "administrator": "Administrateur"
+  "administrator": "Administrateur",
+  "loading": "Veuillez patienter, chargement en cours…"
 }
