@@ -23,21 +23,13 @@ function PrivateRoute({ children }) {
   return children
 }
 
-function PublicRoute({ children }) {
-  const { user, loading } = useAuth()
-  if (loading) return <LoadingScreen />
-  if (user) return <Navigate to="/" replace />
-
-  return children
-}
 
 export default function App() {
-  const { user } = useAuth()
   return (
     <>
       <ConfirmDelete />
       <Routes>
-        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+        <Route path="/login" element={<Login />}/>
         <Route
           path="/*"
           element={
@@ -52,6 +44,8 @@ export default function App() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/change-password" element={<ChangePassword />} />
                   <Route path="/settings" element={<Settings />} />
+
+                  <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </Layout>
             </PrivateRoute>
