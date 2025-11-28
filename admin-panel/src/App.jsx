@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from './context/AuthContext.jsx'
 import Login from './pages/Login.jsx'
 import Dashboard from './pages/Dashboard.jsx'
@@ -11,19 +11,33 @@ import Profile from './pages/Profile.jsx'
 import Settings from './pages/Settings.jsx'
 import { ConfirmDelete } from './components/common/ConfirmDelete.jsx'
 import ChangePassword from './pages/ChangePassword.jsx'
+import LoadingScreen from './components/common/LoadingScreen.jsx'
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
-  if (loading) return null
-  return user ? children : <Navigate to="/login" />
+  const location = useLocation()
+
+  if (loading) return <LoadingScreen />
+  if (!user) return <Navigate to="/login" replace state={{ from: location }} />
+
+  return children
+}
+
+function PublicRoute({ children }) {
+  const { user, loading } = useAuth()
+  if (loading) return <LoadingScreen />
+  if (user) return <Navigate to="/" replace />
+
+  return children
 }
 
 export default function App() {
+  const { user } = useAuth()
   return (
     <>
       <ConfirmDelete />
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route
           path="/*"
           element={

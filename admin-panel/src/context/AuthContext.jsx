@@ -66,8 +66,6 @@ export const AuthProvider = ({ children }) => {
 
       setUser(res.data)  // res.data contains user info
     } catch (err) {
-      // If tokens expired or invalid → clear everything
-      console.warn('Token validation failed:', err.response?.data || err.message)
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
       setUser(null)
