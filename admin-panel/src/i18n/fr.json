@@ -185,5 +185,6 @@
   "device": "Appareil",
   "sign_out_from_device": "Se déconnecter de cet appareil",
   "administrator": "Administrateur",
-  "loading": "Veuillez patienter, chargement en cours…"
+  "loading": "Veuillez patienter, chargement en cours…",
+  "total_owners": "Total des propriétaires"
 }

@@ -182,5 +182,7 @@
   "device": "Device",
   "sign_out_from_device": "Sign out from this device",
   "administrator": "Administrator",
-  "loading": "Please wait, loading…"
+  "loading": "Please wait, loading…",
+  "total_owners": "Total Owners"
+  
 }
