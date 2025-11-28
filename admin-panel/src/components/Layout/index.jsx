@@ -85,7 +85,7 @@ export default function Layout({ children }) {
               ) : sidebarCollapsed ? (
                 <MenuIcon />
               ) : (
-                <ChevronLeftIcon />
+                <MenuIcon />
               )}
             </IconButton>
 
